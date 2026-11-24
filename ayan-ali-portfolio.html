@@ -1,0 +1,3361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>Ayan Ali — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      /* Motion preference + BUILD-FROM-BLANK start state.
+         If the visitor turned motion off (saved choice) or their system
+         prefers reduced motion, the full page shows immediately.
+         Fail-safe: the blank state lifts on its own after 12s so content
+         can NEVER stay hidden (the full agent build takes about a minute). */
+      (function () {
+        try {
+          try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e3) {}
+          try { window.scrollTo(0, 0); } catch (e4) {}
+          var savedOff = false;
+          try { savedOff = window.localStorage.getItem("ayan-motion") === "off"; } catch (e2) {}
+          var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          window.__motionOff = savedOff || reduced;
+          if (savedOff) document.documentElement.classList.add("motion-off");
+          if (!window.__motionOff) {
+            document.documentElement.classList.add("intro-on");
+            window.__introFailsafe = setTimeout(function () {
+              document.documentElement.classList.remove("intro-on");
+              document.documentElement.classList.add("intro-done");
+            }, 150000);
+          } else {
+            document.documentElement.classList.add("intro-done");
+          }
+        } catch (e) { /* no intro — page shows normally */ }
+      })();
+    </script>
+    <style>
+      :root {
+        --bg: #090909;
+        --bg-2: #0e0d0d;
+        --panel: #121111;
+        --panel-2: #171515;
+        --line: rgba(245, 240, 232, 0.1);
+        --line-strong: rgba(245, 240, 232, 0.2);
+        --text: #f5f0e8;
+        --muted: #a79f93;
+        --muted-2: #6f695f;
+        --red: #e02334;
+        --red-deep: #b3121f;
+        --red-soft: rgba(224, 35, 52, 0.12);
+        --radius: 4px;
+        --display: "Anton", "Arial Narrow", sans-serif;
+        --body: "Manrope", "Segoe UI", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      html.intro-on { scroll-behavior: auto !important; }
+      html.motion-off { scroll-behavior: auto; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--body);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection { background: var(--red); color: #fff; }
+
+      /* ---------- Film grain overlay ---------- */
+      .grain {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 80;
+        opacity: 0.04;
+        contain: strict;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      /* Grain is a single STATIC noise tile — never animated (an animated
+         full-screen layer forces a full repaint every frame = lag). */
+      html.intro-on .grain { display: none; }
+
+      /* ---------- Reading progress ---------- */
+      #progress {
+        position: fixed;
+        top: 0; left: 0;
+        height: 3px;
+        width: 100%;
+        background: var(--red);
+        z-index: 120;
+        pointer-events: none;
+        transform-origin: left center;
+        transform: scaleX(0);
+        will-change: transform;
+      }
+
+      /* ---------- Header ---------- */
+      .site-head {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 60;
+        background: rgba(9, 9, 9, 0.86);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        border-bottom: 1px solid var(--line);
+      }
+      .head-inner {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 22px;
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+      .logo {
+        font-family: var(--display);
+        font-size: 1.3rem;
+        letter-spacing: 0.06em;
+        color: var(--text);
+        text-decoration: none;
+        line-height: 1;
+        padding: 10px 2px;
+        white-space: nowrap;
+      }
+      .logo span { color: var(--red); }
+      .main-nav { display: flex; align-items: center; gap: 2px; }
+      .main-nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        padding: 10px 12px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+      }
+      .main-nav a:hover, .main-nav a:focus-visible { color: #fff; }
+      .main-nav a.active { color: var(--red); }
+      .head-actions { display: flex; align-items: center; gap: 10px; flex: none; }
+      #motion-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 8px 14px;
+        min-height: 44px;
+        font: 800 0.7rem var(--body);
+        letter-spacing: 0.12em;
+        cursor: pointer;
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
+      #motion-toggle:hover { color: #fff; border-color: var(--red); }
+      #motion-toggle .mt-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--red);
+        box-shadow: 0 0 8px var(--red);
+        flex: none;
+      }
+      #motion-toggle[aria-pressed="true"] .mt-dot { background: var(--muted-2); box-shadow: none; }
+      .head-cta {
+        background: var(--red);
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        padding: 10px 18px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: var(--radius);
+        transition: background 0.2s ease;
+        white-space: nowrap;
+      }
+      .head-cta:hover { background: var(--red-deep); }
+
+      html.intro-on .site-head { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(9,9,9,0.96); }
+      main { position: relative; z-index: 1; }
+      .container { max-width: 1240px; margin: 0 auto; padding: 0 22px; }
+      section { padding: 80px 0 36px; scroll-margin-top: 84px; }
+
+      /* ---------- Section heads ---------- */
+      .rule-head { margin-bottom: 46px; }
+      .rule-head .rule-line {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+      .rule-head .sec-label {
+        font-family: var(--display);
+        color: var(--red);
+        font-size: 0.95rem;
+        letter-spacing: 0.22em;
+        white-space: nowrap;
+      }
+      .rule-head .rule-line::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--line-strong);
+      }
+      .rule-head h2 {
+        font-family: var(--display);
+        font-size: clamp(2.5rem, 6vw, 4.2rem);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        margin: 0 0 10px;
+        line-height: 1.02;
+      }
+      .rule-head h2 em { font-style: normal; color: var(--red); }
+      .rule-head p { color: var(--muted); margin: 0; max-width: 560px; font-size: 1.02rem; }
+      /* Swarmline-style heading grow: headings are typed small, then
+         scale smoothly into their final size (transform only) */
+      .rule-head h2, .contact h2 { transform-origin: left center; }
+      .contact h2 { transform-origin: center center; }
+      /* will-change ONLY while the grow is actually running — a
+         permanent will-change on every heading pins full layers */
+      .swarm-growing { transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.25, 1.15) !important; will-change: transform; }
+      /* Layout containment on typed text: per-character changes
+         stay inside the heading/line and never reflow the section */
+      .hero h1, .hero .role, .rule-head h2, .contact h2 { contain: layout style; }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        position: relative;
+        min-height: 92svh;
+        display: flex;
+        align-items: center;
+        padding: 170px 0 54px;
+        overflow: hidden;
+      }
+      .giant {
+        position: absolute;
+        /* Top edge sits BELOW the badge strip (badge: top 88px +
+           ~36px tall = ~124px bottom), leaving a clear ~34px band
+           of black between the pill and the first letterforms —
+           the badge and the word can never touch at any width,
+           because both tops are fixed offsets from the hero top,
+           independent of the word's viewport-scaled height. */
+        top: 158px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--display);
+        /* Sized from the viewport width so the WHOLE word fits the
+           screen edge to edge: Anton's 9 caps measure 3.92em of
+           advance including letter-spacing, so 25.2vw spans ~99% of
+           the width. The fit script in the parallax block then
+           measures the real rendered width and trims this to an
+           exact fit — no clipped final O, no horizontal overflow,
+           at desktop and phone widths alike. */
+        font-size: 25.2vw;
+        line-height: 0.95;
+        letter-spacing: 0.01em;
+        color: var(--red);
+        opacity: 0.92;
+        white-space: nowrap;
+        z-index: 0;
+        pointer-events: none;
+        user-select: none;
+        will-change: transform;
+      }
+      /* Photo-less hero: the text block is centred and widened so the
+         giant PORTFOLIO lettering, the name and the roles carry the
+         first page on their own — balanced at desktop widths first */
+      .hero .container { position: relative; z-index: 2; width: 100%; text-align: center; }
+      /* The badge is a direct child of the hero (not of the centred
+         container), anchored to the hero's top edge in the clear
+         black strip under the fixed header — above the giant word's
+         top edge (158px), never on top of its letters. Centring uses
+         left/right + auto margins (no transform), so the buildable
+         entrance transform cannot push it sideways or down onto
+         the word: even mid-build (badge shifted +18px, word at its
+         final spot) a ~16px gap remains. */
+      .hero .badge {
+        position: absolute;
+        top: 88px;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        max-width: calc(100vw - 32px);
+        margin: 0 auto;
+        z-index: 3;
+        justify-content: center;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(224, 35, 52, 0.55);
+        background: rgba(9, 9, 9, 0.72);
+        color: #ffb3ba;
+        border-radius: 999px;
+        padding: 7px 16px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+      .hero .badge i {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 10px #4ade80;
+        display: inline-block;
+        flex: none;
+      }
+      .hero h1 {
+        font-family: var(--display);
+        font-size: clamp(3.4rem, 11vw, 8.75rem);
+        font-weight: 400;
+        letter-spacing: 0.005em;
+        line-height: 0.98;
+        text-transform: uppercase;
+        margin: 0 0 20px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      }
+      .hero h1 .outline-word {
+        color: transparent;
+        -webkit-text-stroke: 2px var(--text);
+      }
+      /* Handwritten "I am" script line directly above the name.
+         The tilt uses the standalone `rotate` property so the
+         buildable entrance transform never clobbers it. Warm
+         off-white reads cleanly over the giant red PORTFOLIO. */
+      .hero .hero-iam {
+        font-family: "Great Vibes", "Segoe Script", cursive;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-weight: 400;
+        line-height: 1.1;
+        color: var(--text);
+        margin: 0 0 2px;
+        rotate: -2.5deg;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+      }
+      .hero .role {
+        font-size: clamp(1.2rem, 3.2vw, 1.8rem);
+        font-weight: 800;
+        color: var(--text);
+        margin: 0 0 16px;
+        min-height: 1.5em;
+      }
+      .hero .role .typed { color: var(--red); }
+      .hero .role .caret {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background: var(--red);
+        margin-left: 3px;
+        vertical-align: -0.12em;
+        animation: blink 1.06s steps(1) infinite;
+      }
+      .hero .role .caret.typing { animation: none; opacity: 1; }
+      @keyframes blink { 50% { opacity: 0; } }
+      html.motion-off .hero .role .caret { animation: none; }
+      .hero .intro { color: var(--muted); font-size: 1.08rem; max-width: 640px; margin: 0 auto 36px; }
+      .hero .intro strong { color: var(--text); }
+      .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.85rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 14px 28px;
+        border-radius: var(--radius);
+        min-height: 50px;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      }
+      .btn-solid { background: var(--red); color: #fff; }
+      .btn-solid:hover { background: var(--red-deep); }
+      .btn-ghost { border: 1px solid var(--line-strong); color: var(--text); background: rgba(9,9,9,0.5); }
+      .btn-ghost:hover { border-color: var(--red); color: #fff; }
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        margin: 48px auto 0;
+        padding-top: 28px;
+        border-top: 1px solid var(--line-strong);
+        max-width: 760px;
+        text-align: center;
+      }
+      .hero-stats .num {
+        font-family: var(--display);
+        font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+        color: var(--red);
+        line-height: 1;
+      }
+      .hero-stats .lbl { color: var(--muted); font-size: 0.88rem; margin: 7px auto 0; max-width: 210px; }
+      .hero .scroll-hint {
+        margin-top: 38px;
+        color: var(--muted-2);
+        font-size: 0.76rem;
+        letter-spacing: 0.26em;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+      .hero .scroll-hint::before {
+        content: "";
+        width: 56px; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--red));
+      }
+      .hero .scroll-hint::after {
+        content: "";
+        width: 56px; height: 1px;
+        background: linear-gradient(90deg, var(--red), transparent);
+      }
+
+      /* ---------- About ---------- */
+      .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 26px; }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 32px;
+      }
+      .card p { color: var(--muted); margin: 0 0 14px; }
+      .card p:last-child { margin-bottom: 0; }
+      .card p strong { color: var(--text); }
+      .card h3.card-title {
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-size: 1.15rem;
+        margin: 0 0 18px;
+      }
+      .mini-skills { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+      .mini-skills li {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 14px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .mini-skills li:last-child { border-bottom: none; }
+      .mini-skills li b { color: var(--text); font-weight: 800; white-space: nowrap; }
+      .mini-skills li span { text-align: right; }
+      .process {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-top: 26px;
+      }
+      .p-step {
+        border: 1px solid var(--line);
+        border-top: 3px solid var(--red);
+        background: var(--bg-2);
+        border-radius: var(--radius);
+        padding: 22px;
+      }
+      .p-step .p-num {
+        font-family: var(--display);
+        color: var(--red);
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+      .p-step h3 { margin: 10px 0 6px; font-size: 1.02rem; font-weight: 800; letter-spacing: 0.02em; }
+      .p-step p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+      /* ---------- Journey timeline ---------- */
+      .timeline { position: relative; padding-left: 34px; }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 9px; top: 8px;
+        width: 2px; height: calc(100% - 16px);
+        transform: scaleY(var(--tl, 1));
+        transform-origin: top center;
+        background: linear-gradient(180deg, var(--red), rgba(224, 35, 52, 0.05));
+      }
+      .t-item { position: relative; padding-bottom: 40px; }
+      .t-item:last-child { padding-bottom: 6px; }
+      .t-item::before {
+        content: "";
+        position: absolute;
+        left: -32px; top: 7px;
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 3px solid var(--red);
+        box-shadow: 0 0 14px rgba(224, 35, 52, 0.5);
+      }
+      .t-item .when {
+        color: var(--red);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .t-item h3 {
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin: 7px 0 7px;
+        font-size: 1.45rem;
+      }
+      .t-item p { color: var(--muted); margin: 0; max-width: 660px; }
+      .t-item p strong { color: var(--text); }
+
+      /* ---------- Skills ---------- */
+      .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
+      .skill {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 26px;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+      .skill:hover { border-color: rgba(224, 35, 52, 0.6); transform: translateY(-3px); }
+      html.motion-off .skill:hover { transform: none; }
+      .skill .glyph {
+        width: 46px; height: 46px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 900; font-size: 0.95rem;
+        color: #fff;
+        margin-bottom: 16px;
+      }
+      .skill h3 { margin: 0 0 6px; font-size: 1.12rem; font-weight: 800; }
+      .skill p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+      .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+      .tag {
+        background: var(--panel-2);
+        color: #d8d2c7;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 18px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      /* ---------- Projects placeholder ---------- */
+      .soon {
+        border: 1px dashed rgba(224, 35, 52, 0.5);
+        background: var(--red-soft);
+        border-radius: var(--radius);
+        padding: 56px 32px;
+        text-align: center;
+      }
+      .soon .big {
+        font-family: var(--display);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 1.9rem;
+        font-weight: 400;
+        margin: 0 0 10px;
+      }
+      .soon p { color: var(--muted); margin: 0 auto; max-width: 460px; }
+      .soon .dot-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 22px; }
+      .soon .dot-row i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+
+      /* ---------- Contact ---------- */
+      .contact { text-align: center; padding-bottom: 96px; }
+      .contact h2 {
+        font-family: var(--display);
+        font-size: clamp(3.4rem, 12vw, 9rem);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        line-height: 0.98;
+        margin: 0 0 20px;
+      }
+      .contact h2 .red { color: var(--red); }
+      .contact p { color: var(--muted); max-width: 520px; margin: 0 auto 42px; font-size: 1.05rem; }
+      .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+      .social {
+        display: inline-flex; align-items: center; gap: 10px;
+        text-decoration: none;
+        color: var(--text);
+        background: var(--panel);
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius);
+        padding: 13px 26px;
+        font-weight: 800;
+        font-size: 0.92rem;
+        letter-spacing: 0.04em;
+        min-height: 50px;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+      .social:hover { border-color: var(--red); background: var(--red-soft); }
+      .social svg { width: 20px; height: 20px; flex: none; }
+
+      /* ---------- Footer ---------- */
+      footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid var(--line);
+        background: #050505;
+      }
+      .foot-inner { max-width: 1240px; margin: 0 auto; padding: 44px 22px 46px; text-align: center; }
+      .foot-inner .name {
+        font-family: var(--display);
+        font-size: 1.9rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .foot-inner .name span { color: var(--red); }
+      .foot-inner p { color: var(--muted-2); font-size: 0.88rem; margin: 8px 0 0; }
+      .foot-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 22px; margin-top: 16px; }
+      .foot-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 700; padding: 10px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+      .foot-links a:hover { color: #fff; }
+      .replay-btn {
+        display: inline-flex; align-items: center; gap: 9px;
+        margin-top: 20px;
+        background: var(--red-soft);
+        color: #ffb3ba;
+        border: 1px solid rgba(224, 35, 52, 0.55);
+        border-radius: var(--radius);
+        padding: 12px 24px;
+        font: 800 0.85rem var(--body);
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        min-height: 46px;
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+      .replay-btn:hover { background: rgba(224, 35, 52, 0.22); border-color: var(--red); }
+
+      /* After the intro, parallax drives this transform directly */
+      html.intro-done .giant { transition: none; }
+
+      /* ---------- Agent swarm — autonomous cursor arrows ---------- */
+      #agent-swarm {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 90;
+        overflow: hidden;
+      }
+      html.motion-off #agent-swarm, html.motion-off #swarm-bar { display: none; }
+      .agent {
+        position: absolute;
+        left: 0; top: 0;
+        width: 24px; height: 24px;
+        pointer-events: none;
+        will-change: transform;
+        contain: layout style;
+      }
+      .agent svg { display: block; width: 21px; height: 21px; overflow: visible; }
+      /* Keyboard cue chip for the copy-duplicate phase (Ctrl+C / Ctrl+V) */
+      .key-cue {
+        position: absolute;
+        z-index: 4;
+        pointer-events: none;
+        background: rgba(10, 9, 9, 0.94);
+        border: 1px solid var(--line-strong);
+        border-bottom-width: 2px;
+        border-radius: 6px;
+        color: #fff;
+        font: 800 11px/1 var(--body);
+        letter-spacing: 0.04em;
+        padding: 6px 9px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        opacity: 1;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      .key-cue.fade { opacity: 0; transform: translateY(4px); }
+      /* Pasted name, highlighted before it is re-typed */
+      .name-highlight {
+        background: rgba(224, 35, 52, 0.4) !important;
+        border-radius: 3px;
+        box-shadow: 0 0 0 3px rgba(224, 35, 52, 0.4);
+      }
+      /* Gate hint — the team is assembled and waiting for the signal */
+      #gate-hint {
+        position: absolute;
+        left: 50%;
+        top: 44%;
+        transform: translateX(-50%);
+        margin-top: min(27vh, 218px);
+        z-index: 5;
+        pointer-events: none;
+        text-align: center;
+        background: rgba(10, 9, 9, 0.88);
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 14px 24px 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+        max-width: calc(100vw - 32px);
+        transition: opacity 0.35s ease;
+      }
+      #gate-hint.fade { opacity: 0; }
+      #gate-hint .gh-main {
+        display: flex; align-items: center; justify-content: center; gap: 9px;
+        font-size: 0.95rem; font-weight: 800; letter-spacing: 0.02em; color: var(--text);
+        white-space: nowrap;
+      }
+      #gate-hint .gh-main i {
+        width: 8px; height: 8px; border-radius: 50%; flex: none;
+        background: var(--red); box-shadow: 0 0 10px var(--red);
+        animation: livePulse 1.8s ease infinite;
+      }
+      #gate-hint .gh-sub { color: var(--muted); font-size: 0.76rem; font-weight: 700; margin-top: 5px; letter-spacing: 0.04em; }
+      @media (max-width: 640px) {
+        #gate-hint { margin-top: 158px; padding: 12px 16px 10px; }
+        #gate-hint .gh-main { font-size: 0.84rem; white-space: normal; }
+      }
+      .agent.is-clicking svg { animation: agentClick 0.28s ease; }
+      @keyframes agentClick { 0% { transform: scale(1); } 40% { transform: scale(0.78); } 100% { transform: scale(1); } }
+      .click-ripple {
+        position: absolute;
+        width: 30px; height: 30px;
+        margin: -15px 0 0 -15px;
+        border-radius: 50%;
+        border: 2px solid;
+        pointer-events: none;
+        animation: rippleOut 0.6s ease-out forwards;
+      }
+      @keyframes rippleOut { from { transform: scale(0.25); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+      .drag-box {
+        position: absolute;
+        border: 1.5px dashed;
+        background: rgba(255,255,255,0.04);
+        pointer-events: none;
+        animation: dragFade 0.9s ease forwards;
+      }
+      @keyframes dragFade { 0% { opacity: 0; } 15% { opacity: 0.9; } 100% { opacity: 0; } }
+      /* ---------- Snipping-tool drag selection (per-agent, parallel) ---------- */
+      .snip-box {
+        position: absolute;
+        border: 1px solid rgba(255,255,255,0.95);
+        box-shadow: 0 0 0 1px rgba(224,35,52,0.9), inset 0 0 0 1px rgba(0,0,0,0.25);
+        background: rgba(224,35,52,0.07);
+        pointer-events: none;
+        z-index: 2;
+        will-change: width, height;
+      }
+      .snip-box.flash { background: rgba(255,255,255,0.22); }
+      .snip-box.fade { opacity: 0; transition: opacity 0.28s ease; }
+      .snip-dim {
+        position: absolute;
+        left: 0; top: -24px;
+        background: rgba(8,8,8,0.92);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.25);
+        font: 700 10px/1 var(--body);
+        letter-spacing: 0.04em;
+        padding: 4px 7px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+        pointer-events: none;
+      }
+      .snip-dim.below { top: auto; bottom: -24px; }
+      .snip-handle {
+        position: absolute;
+        width: 7px; height: 7px;
+        background: #fff;
+        border: 1.5px solid var(--red);
+        border-radius: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .snip-box.complete .snip-handle { opacity: 1; }
+      .agent.is-snapping svg { animation: snapPulse 0.22s ease; }
+      @keyframes snapPulse { 0% { transform: scale(1); } 45% { transform: scale(0.8); } 100% { transform: scale(1); } }
+      .agent.is-dragging svg { outline: 1px solid rgba(255,255,255,0.5); }
+      .swarm-selected {
+        outline: 1.5px solid rgba(224, 35, 52, 0.7) !important;
+        outline-offset: 6px;
+        border-radius: 4px;
+      }
+      /* ---------- Swarm status bar ---------- */
+      #swarm-bar {
+        position: fixed;
+        left: 50%;
+        bottom: 16px;
+        transform: translateX(-50%);
+        z-index: 91;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(10, 9, 9, 0.9);
+        border: 1px solid var(--line-strong);
+        box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+        border-radius: 10px;
+        padding: 9px 16px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        color: var(--text);
+        white-space: nowrap;
+        max-width: calc(100vw - 20px);
+      }
+      #swarm-bar .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px #4ade80; animation: livePulse 1.6s ease infinite; flex: none; }
+      @keyframes livePulse { 50% { opacity: 0.45; } }
+      #swarm-bar .sep { width: 1px; height: 14px; background: var(--line-strong); flex: none; }
+      #swarm-bar .layers { color: var(--muted); font-variant-numeric: tabular-nums; }
+      #swarm-bar .layers b { color: #fff; }
+      #swarm-bar .track { width: 58px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.12); overflow: hidden; flex: none; }
+      #swarm-bar .track i { display: block; height: 100%; width: 100%; border-radius: 999px; background: var(--red); transform-origin: left center; transform: scaleX(0); }
+      #swarm-bar .status { color: #ff8f9a; font-weight: 700; }
+      #swarm-bar .mini-cursors { display: flex; align-items: center; flex: none; }
+      #swarm-bar .mini-cursors i { width: 9px; height: 9px; border-radius: 50%; display: block; margin-left: -3px; border: 1.5px solid #0a0909; }
+      #swarm-bar .mini-cursors i:first-child { margin-left: 0; }
+      /* Live crew readout: dots light up with agents currently on a job */
+      #swarm-bar .crew { display: flex; align-items: center; gap: 7px; flex: none; }
+      #swarm-bar .crew-dots { display: flex; align-items: center; gap: 2.5px; }
+      #swarm-bar .crew-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.16); display: block; transition: background 0.25s ease, box-shadow 0.25s ease; }
+      #swarm-bar .crew-dots i.on { background: var(--red); box-shadow: 0 0 6px rgba(224,35,52,0.8); }
+      #swarm-bar .working { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+      #swarm-bar .working b { color: #fff; }
+      @media (max-width: 640px) { #swarm-bar .crew-dots { display: none; } #swarm-bar .mini-cursors { display: none; } }
+      /* Manual scroll-driven mode (Phase 2): the hint replaces the
+         auto-tour status text in the bottom bar */
+      #manual-scroll-hint { display: none; color: #ffb3ba; font-weight: 800; white-space: nowrap; }
+      html.manual-scroll #manual-scroll-hint { display: inline; }
+      html.manual-scroll #swarm-bar .status { display: none; }
+      @media (max-width: 640px) { #manual-scroll-hint { font-size: 10.5px; white-space: normal; text-align: center; } }
+      @media (max-width: 640px) {
+        #swarm-bar { font-size: 11px; gap: 7px; padding: 8px 12px; bottom: 12px; }
+        #swarm-bar .status { display: none; }
+        #swarm-bar .track { width: 40px; }
+      }
+
+      /* ---------- BUILD-FROM-BLANK intro ---------- */
+      .buildable { transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.25), outline-color 0.5s ease; }
+      html.intro-on .buildable { opacity: 0 !important; transform: translateY(18px) scale(0.97); pointer-events: none; }
+      html.intro-on .buildable.built { opacity: 1 !important; transform: translateY(0) scale(1); pointer-events: auto; }
+      /* The giant word centres with translateX(-50%); the generic
+         buildable transforms above would override that and leave its
+         left edge at screen-centre, pushing the last letters off the
+         right edge for the whole build — so it keeps its centring
+         inside the entrance motion instead. */
+      html.intro-on .giant.buildable { transform: translateX(-50%) translateY(18px) scale(0.97); }
+      html.intro-on .giant.buildable.built { transform: translateX(-50%) translateY(0) scale(1); }
+      html.intro-on .buildable.just-built { outline: 1.5px solid rgba(224, 35, 52, 0.8); outline-offset: 6px; border-radius: 4px; }
+      body.intro-building { overflow-x: hidden; }
+      #skip-intro {
+        position: fixed;
+        right: 16px;
+        bottom: 74px;
+        z-index: 95;
+        display: none;
+        align-items: center;
+        gap: 7px;
+        background: rgba(14, 13, 13, 0.94);
+        color: #fff;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius);
+        padding: 11px 20px;
+        font: 800 0.8rem var(--body);
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        min-height: 44px;
+        box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+      }
+      #skip-intro:hover { border-color: var(--red); background: rgba(224, 35, 52, 0.18); }
+      html.intro-on #skip-intro { display: inline-flex; }
+
+      /* ---------- Build choreography extras ---------- */
+      #agent-swarm, #swarm-bar { transition: opacity 0.8s ease; }
+      #build-box {
+        position: absolute;
+        border: 1.5px dashed rgba(224, 35, 52, 0.9);
+        background: rgba(224, 35, 52, 0.05);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      html.intro-on .giant-letter {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(-46px) scale(0.5) rotate(-7deg);
+      }
+      html.intro-on .giant-letter.placed {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+        transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+      }
+      .giant-letter { display: inline-block; }
+      html.intro-on .type-char { opacity: 0; }
+      html.intro-on .type-char.on { opacity: 1; }
+      .build-caret {
+        display: inline-block;
+        width: 3px; height: 0.92em;
+        background: var(--red);
+        margin-left: 2px;
+        vertical-align: -0.1em;
+        animation: blink 1.06s steps(1) infinite;
+      }
+      /* Solid (no blink) while characters are actively landing */
+      .build-caret.typing { animation: none; opacity: 1; }
+      /* Typed glyphs appear crisply — no fade/slide per letter */
+      .type-char { transition: none !important; }
+      html.intro-on .buildable.enter-left { transform: translateX(-52px) scale(0.98); }
+      html.intro-on .buildable.enter-left.built { transform: translateX(0) scale(1); }
+      html.intro-on .buildable.enter-right { transform: translateX(52px) scale(0.98); }
+      html.intro-on .buildable.enter-right.built { transform: translateX(0) scale(1); }
+
+      /* ---------- Reveal on scroll ---------- */
+      .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+      html.motion-off .reveal { opacity: 1; transform: none; transition: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+        .hero .role .caret { animation: none; }
+        .grain { animation: none; }
+        #swarm-bar .live-dot { animation: none; }
+      }
+
+      /* Finished page: skip rendering work for off-screen sections */
+      html.intro-done section:not(.hero), html.intro-done footer {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 640px;
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 1020px) {
+        .main-nav a { padding: 10px 8px; font-size: 0.7rem; }
+        .process { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 860px) {
+        .about-grid { grid-template-columns: 1fr; }
+        .main-nav { display: none; }
+      }
+      @media (max-width: 640px) {
+        .head-inner { padding: 0 14px; min-height: 60px; }
+        .logo { font-size: 1.12rem; }
+        .head-cta { display: none; }
+        #motion-toggle { padding: 8px 11px; font-size: 0.64rem; }
+        section { padding: 58px 0 24px; }
+        .hero { padding: 148px 0 46px; min-height: auto; }
+        /* Mobile badge strip: header is 60px, badge at 76px (~36px
+           tall → ~112px bottom), giant top at 140px — same clear
+           ~28px gap as desktop, pill never touches the letters. */
+        .hero .badge { top: 76px; }
+        .giant { top: 140px; }
+        .hero-stats { grid-template-columns: 1fr 1fr; gap: 18px; }
+        .hero-stats .lbl { max-width: none; }
+        .card, .stat { padding: 24px; }
+        .process { grid-template-columns: 1fr; }
+        .contact { padding-bottom: 84px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div id="agent-swarm" aria-hidden="true"></div>
+    <div id="swarm-bar" aria-hidden="true">
+      <span class="live-dot"></span>
+      <span class="mini-cursors"><i style="background:#e02334"></i><i style="background:#ff4d2e"></i><i style="background:#ff7a18"></i><i style="background:#f5f0e8"></i><i style="background:#b3121f"></i></span>
+      <span id="swarm-agents-label">15 agents</span>
+      <span class="crew"><span class="crew-dots" id="swarm-crew-dots" aria-hidden="true"></span><span class="working" id="swarm-working"><b>0</b> working</span></span>
+      <span class="sep"></span>
+      <span class="layers"><b id="swarm-layers-now">0</b> / 401 layers</span>
+      <span class="track"><i id="swarm-progress"></i></span>
+      <span class="status" id="swarm-status">starting from blank canvas…</span>
+      <span id="manual-scroll-hint">Scroll karo — design tumhare scroll ke saath banega ↓</span>
+    </div>
+    <button id="skip-intro" type="button">Skip intro →</button>
+
+    <header class="site-head">
+      <div class="head-inner">
+        <a class="logo" href="#home">AYAN ALI<span>.</span></a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#home" class="active">HOME</a>
+          <a href="#about">ABOUT</a>
+          <a href="#journey">JOURNEY</a>
+          <a href="#skills">SKILLS</a>
+          <a href="#projects">PROJECTS</a>
+          <a href="#contact">CONTACT</a>
+        </nav>
+        <div class="head-actions">
+          <button id="motion-toggle" type="button" aria-pressed="false" aria-label="Toggle animations">
+            <span class="mt-dot" aria-hidden="true"></span><span id="motion-toggle-label">MOTION ON</span>
+          </button>
+          <a href="#contact" class="head-cta">GET IN TOUCH</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="home">
+        <div class="giant buildable" id="giant-word" data-build-status="setting the big title…" aria-hidden="true">PORTFOLIO</div>
+        <span class="badge buildable" data-build-status="placing intro line…"><i></i> BUILDING &amp; LEARNING IN PUBLIC</span>
+        <div class="container">
+          <p class="hero-iam buildable" data-build-status="writing “I am”…">I am</p>
+          <h1 class="buildable" data-build-status="designing hero — Ayan Ali…">Ayan<br /><span class="outline-word">Ali</span></h1>
+          <p class="role buildable" data-build-status="typing the roles…"><span class="typed" id="typed">Polytechnic Student</span><span class="caret" aria-hidden="true"></span></p>
+          <p class="intro buildable" data-build-status="writing intro…">A <strong>Polytechnic student</strong> exploring cloud computing with <strong>AWS</strong> — showing up every single day, building on the web, and turning a daily streak into real skills.</p>
+          <div class="actions">
+            <a class="btn btn-solid magnetic" href="#about">About Me</a>
+            <a class="btn btn-ghost magnetic" href="#contact">Get In Touch</a>
+          </div>
+          <div class="hero-stats buildable" data-build-status="adding stats…">
+            <div>
+              <div class="num">25+</div>
+              <div class="lbl">Day streak on AWS Builder Center — visit, like &amp; comment, daily</div>
+            </div>
+            <div>
+              <div class="num">3</div>
+              <div class="lbl">Websites live on GitHub Pages, built &amp; shipped by me</div>
+            </div>
+            <div>
+              <div class="num">1</div>
+              <div class="lbl">Article published on AWS Builder Center — “21 Days, Zero Missed”</div>
+            </div>
+          </div>
+          <div class="scroll-hint buildable" data-build-status="finishing hero…">SCROLL TO EXPLORE</div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="container">
+          <div class="rule-head reveal buildable" data-build-status="building About…">
+            <div class="rule-line"><span class="sec-label">01 · ABOUT</span></div>
+            <h2>About <em>Me</em></h2>
+            <p>A student on a mission — learning cloud, building for the web, and staying consistent every day.</p>
+          </div>
+          <div class="about-grid">
+            <div class="card reveal buildable enter-left" data-build-status="writing About…">
+              <p>I'm <strong>Ayan Ali</strong>, a <strong>Polytechnic student</strong> learning <strong>cloud computing with AWS</strong>. I believe skills are built the same way streaks are — one day at a time, without missing.</p>
+              <p>On the <strong>AWS Builder Center</strong> community, I keep a daily visit, like and comment streak going, and I share what I learn along the way by writing and building in public.</p>
+              <p>I'm also pursuing a <strong>WAPT course — Web Application Penetration Testing</strong>. Cybersecurity is a genuine interest of mine, and I'm learning how web applications are tested for weaknesses so they can be made stronger.</p>
+              <p>When I'm not studying, I'm creating websites with HTML, CSS and JavaScript and publishing them on GitHub — learning by shipping, not just by reading.</p>
+            </div>
+            <div class="card reveal buildable enter-right" data-build-status="listing focus areas…">
+              <h3 class="card-title">Focus Areas</h3>
+              <ul class="mini-skills">
+                <li><b>Cloud</b><span>AWS fundamentals, Builder Center community</span></li>
+                <li><b>Security</b><span>Cybersecurity &amp; WAPT — web application penetration testing</span></li>
+                <li><b>Web</b><span>HTML, CSS &amp; JavaScript sites</span></li>
+                <li><b>Consistency</b><span>Daily streaks, learning in public</span></li>
+                <li><b>Publishing</b><span>GitHub Pages, articles &amp; READMEs</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="process">
+            <div class="p-step reveal buildable" data-build-status="laying out process…">
+              <div class="p-num">01</div>
+              <h3>Learn</h3>
+              <p>Pick one topic and study it properly — no random hopping.</p>
+            </div>
+            <div class="p-step reveal buildable" data-build-status="laying out process…">
+              <div class="p-num">02</div>
+              <h3>Practice</h3>
+              <p>Try it hands-on the same day, while it's still fresh.</p>
+            </div>
+            <div class="p-step reveal buildable" data-build-status="laying out process…">
+              <div class="p-num">03</div>
+              <h3>Build</h3>
+              <p>Turn it into a small real thing — a page, a site, a post.</p>
+            </div>
+            <div class="p-step reveal buildable" data-build-status="laying out process…">
+              <div class="p-num">04</div>
+              <h3>Share</h3>
+              <p>Publish it and write about it, so the streak stays public.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JOURNEY -->
+      <section id="journey">
+        <div class="container">
+          <div class="rule-head reveal buildable" data-build-status="drawing Journey…">
+            <div class="rule-line"><span class="sec-label">02 · JOURNEY</span></div>
+            <h2>My <em>Journey</em></h2>
+            <p>Every expert was once a beginner who refused to miss a day.</p>
+          </div>
+          <div class="timeline buildable" data-build-status="drawing Journey…">
+            <div class="t-item reveal buildable" data-build-status="drawing Journey…">
+              <span class="when">Now · Ongoing</span>
+              <h3>Polytechnic Studies</h3>
+              <p>Studying at Polytechnic while building a strong foundation in technology — and learning cloud computing with AWS alongside my coursework.</p>
+            </div>
+            <div class="t-item reveal buildable" data-build-status="drawing Journey…">
+              <span class="when">Now · Ongoing</span>
+              <h3>Cybersecurity — WAPT Course</h3>
+              <p>Currently pursuing a <strong>WAPT course in Web Application Penetration Testing</strong>, driven by a genuine interest in <strong>cybersecurity</strong> — learning how web applications are probed for vulnerabilities, and how they are defended.</p>
+            </div>
+            <div class="t-item reveal buildable" data-build-status="drawing Journey…">
+              <span class="when">AWS Builder Center</span>
+              <h3>The 30-Day Streak</h3>
+              <p>On a mission to complete a 30-day visit, like and comment streak on AWS Builder Center — past day 25 and counting. Along the way I published my article <strong>“21 Days, Zero Missed”</strong>, sharing the streak journey and asking the community for their tips.</p>
+            </div>
+            <div class="t-item reveal buildable" data-build-status="drawing Journey…">
+              <span class="when">GitHub</span>
+              <h3>Building &amp; Publishing on the Web</h3>
+              <p>Creating websites with HTML, CSS and JavaScript and publishing them live through GitHub Pages — including a wedding invitation site and a food-delivery site. Every site shipped is a lesson learned in public.</p>
+            </div>
+            <div class="t-item reveal buildable" data-build-status="drawing Journey…">
+              <span class="when">Next</span>
+              <h3>Deeper Into the Cloud</h3>
+              <p>Next up: going deeper into AWS services, growing my skills project by project, and keeping the streak mindset alive in everything I learn.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills">
+        <div class="container">
+          <div class="rule-head reveal buildable" data-build-status="styling Skills…">
+            <div class="rule-line"><span class="sec-label">03 · SKILLS</span></div>
+            <h2>My <em>Skills</em></h2>
+            <p>The tools I'm learning and using to build for the web and the cloud.</p>
+          </div>
+          <div class="skill-grid">
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#e02334,#7a0d18)">&lt;/&gt;</div>
+              <h3>HTML</h3>
+              <p>Structuring clean, semantic pages for the web.</p>
+            </div>
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#ff7a18,#b3121f)">#</div>
+              <h3>CSS</h3>
+              <p>Styling responsive, modern layouts that look great on any screen.</p>
+            </div>
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#ffb020,#e02334)">JS</div>
+              <h3>JavaScript</h3>
+              <p>Adding interactivity and life to websites.</p>
+            </div>
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#3a3a3a,#101010)">AWS</div>
+              <h3>AWS Cloud</h3>
+              <p>Learning cloud computing through the AWS Builder Center community.</p>
+            </div>
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#57534e,#1c1917)">Git</div>
+              <h3>Git &amp; GitHub</h3>
+              <p>Version control, publishing sites, and an interactive profile README.</p>
+            </div>
+            <div class="skill reveal buildable" data-build-status="styling Skills…">
+              <div class="glyph" style="background:linear-gradient(135deg,#7a0d18,#1c1917)">SEC</div>
+              <h3>Cybersecurity — WAPT</h3>
+              <p>Pursuing Web Application Penetration Testing — learning how web apps are tested and secured, out of a genuine interest in cybersecurity.</p>
+            </div>
+          </div>
+          <div class="tag-row reveal">
+            <span class="tag buildable" data-build-status="placing skill tags…">HTML</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">CSS</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">JavaScript</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">AWS</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">Git</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">GitHub</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">GitHub Pages</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">Responsive Design</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">Cybersecurity</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">WAPT</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">Web App Security</span>
+            <span class="tag buildable" data-build-status="placing skill tags…">Learning in Public</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="container">
+          <div class="rule-head reveal buildable" data-build-status="placing Projects…">
+            <div class="rule-line"><span class="sec-label">04 · PROJECTS</span></div>
+            <h2>My <em>Projects</em></h2>
+            <p>Things I'm building as I learn — new work is on the way.</p>
+          </div>
+          <div class="soon reveal buildable" data-build-status="placing Projects…">
+            <div class="dot-row" aria-hidden="true">
+              <i style="background:#e02334"></i>
+              <i style="background:#ff7a18"></i>
+              <i style="background:#ffb020"></i>
+              <i style="background:#f5f0e8"></i>
+              <i style="background:#ff2e63"></i>
+            </div>
+            <p class="big">Projects coming soon</p>
+            <p>I'm crafting my next builds right now. Check back soon — or follow along on GitHub to see what lands first.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="contact">
+        <div class="container">
+          <div class="reveal buildable" data-build-status="finishing Contact…">
+            <h2>Let's <span class="red">Talk</span></h2>
+            <p>Want to talk cloud, streaks, or building for the web? Find me on these platforms — my inbox is always open to fellow learners.</p>
+            <div class="socials">
+              <a class="social magnetic" href="https://github.com/ayan65159-commits" target="_blank" rel="noopener">
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                GitHub
+              </a>
+              <a class="social magnetic" href="https://www.instagram.com/mr_ayan6069" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.6" fill="currentColor" stroke="none"/></svg>
+                Instagram
+              </a>
+              <a class="social magnetic" href="https://builder.aws.com/community/@ayan65159" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 22 20.5H2L12 2.5zm0 5.2L6.6 17.5h10.8L12 7.7z"/></svg>
+                AWS Builder Center
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="buildable" data-build-status="adding footer…">
+      <div class="foot-inner">
+        <div class="name">Ayan Ali<span>.</span></div>
+        <p>Polytechnic Student · AWS Cloud Learner · Building in public, one day at a time.</p>
+        <div class="foot-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#journey">Journey</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="replay-btn" id="replay-build" type="button">↻ Watch agents build it</button>
+        <p>© 2026 Ayan Ali. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      function motionIsOff() { return document.documentElement.classList.contains("motion-off"); }
+
+      /* ============ Typing / rotating roles ============ */
+      (function () {
+        var roles = ["Polytechnic Student", "AWS Cloud Learner", "Cybersecurity Enthusiast", "Building in Public", "Streak Keeper — Day by Day"];
+        var el = document.getElementById("typed");
+        if (!el) return;
+        var ri = 0, ci = roles[0].length, deleting = true, timer = null;
+        function tick() {
+          if (motionIsOff()) { el.textContent = roles[0]; timer = setTimeout(tick, 1200); return; }
+          if (document.documentElement.classList.contains("intro-on")) { timer = setTimeout(tick, 700); return; }
+          var word = roles[ri];
+          if (deleting) {
+            ci--;
+            if (ci <= 0) { deleting = false; ri = (ri + 1) % roles.length; word = roles[ri]; ci = 0; }
+          } else {
+            ci++;
+            if (ci >= word.length) { deleting = true; timer = setTimeout(tick, 1700); el.textContent = word; return; }
+          }
+          el.textContent = roles[ri].slice(0, ci);
+          timer = setTimeout(tick, deleting ? 34 : 68);
+        }
+        timer = setTimeout(tick, 1500);
+      })();
+
+      /* ============ Reveal on scroll ============ */
+      (function () {
+        var items = document.querySelectorAll(".reveal");
+        if (!("IntersectionObserver" in window) || motionIsOff()) {
+          items.forEach(function (n) { n.classList.add("in"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        items.forEach(function (n) { io.observe(n); });
+        setTimeout(function () {
+          items.forEach(function (n) { n.classList.add("in"); });
+        }, 1600);
+      })();
+
+      /* ============ Active nav link ============ */
+      (function () {
+        var links = document.querySelectorAll(".main-nav a[href^='#']");
+        var map = {};
+        links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+        var sections = document.querySelectorAll("main section[id]");
+        if (!("IntersectionObserver" in window)) return;
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              links.forEach(function (a) { a.classList.remove("active"); });
+              var a = map[e.target.id];
+              if (a) a.classList.add("active");
+            }
+          });
+        }, { rootMargin: "-40% 0px -55% 0px" });
+        sections.forEach(function (s) { io.observe(s); });
+      })();
+
+      /* ============ Reading progress + hero parallax ============ */
+      (function () {
+        var bar = document.getElementById("progress");
+        var giant = document.getElementById("giant-word");
+        /* Fit the giant PORTFOLIO word to the screen: measure its real
+           rendered width and scale the font-size so all 9 letters span
+           ~99% of the layout viewport, centred, edge to edge — never
+           clipped, never overflowing. Runs on load, again once the
+           Anton webfont lands (fallback metrics differ), and on
+           resize. Skipped while the swarm intro is building, so the
+           letter rects the agents measure never shift mid-build; the
+           parallax below is vertical-only and cannot push it sideways. */
+        function fitGiant() {
+          if (!giant) return;
+          if (document.documentElement.classList.contains("intro-on")) return;
+          var w = giant.getBoundingClientRect().width;
+          if (!w) return;
+          var fs = parseFloat(window.getComputedStyle(giant).fontSize);
+          if (!fs) return;
+          var target = document.documentElement.clientWidth * 0.99;
+          var next = fs * (target / w);
+          if (Math.abs(next - fs) > 0.5) giant.style.fontSize = next.toFixed(1) + "px";
+        }
+        fitGiant();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitGiant);
+        window.addEventListener("resize", fitGiant);
+        /* The intro usually ends long after load/fonts, so re-fit the
+           moment the build state lifts and the word reaches its final
+           centred layout. */
+        if (window.MutationObserver) {
+          new MutationObserver(function () {
+            if (!document.documentElement.classList.contains("intro-on")) fitGiant();
+          }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+        }
+        var ticking = false;
+        var lastY = -1;
+        function update() {
+          ticking = false;
+          var y = window.scrollY || 0; /* the ONE scrollY read per frame */
+          if (Math.abs(y - lastY) < 1) return;
+          lastY = y;
+          var doc = document.documentElement;
+          var max = doc.scrollHeight - window.innerHeight;
+          if (bar) bar.style.transform = "scaleX(" + (max > 0 ? y / max : 0) + ")";
+          /* Parallax OFF during the swarm build (a second scroll-driven
+             transform on the huge PORTFOLIO layer = pure repaint cost);
+             transform-only afterwards, in this same rAF. */
+          if (doc.classList.contains("intro-on")) return;
+          if (!motionIsOff() && y < window.innerHeight * 1.2) {
+            if (giant) giant.style.transform = "translateX(-50%) translate3d(0," + (y * 0.16) + "px,0)";
+          }
+        }
+        window.addEventListener("scroll", function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
+      })();
+
+      /* ============ Magnetic buttons ============ */
+      (function () {
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+        document.querySelectorAll(".magnetic").forEach(function (el) {
+          el.addEventListener("mousemove", function (e) {
+            if (motionIsOff()) return;
+            if (document.documentElement.classList.contains("intro-on")) return;
+            var r = el.getBoundingClientRect();
+            var x = (e.clientX - r.left - r.width / 2) / r.width;
+            var y = (e.clientY - r.top - r.height / 2) / r.height;
+            el.style.transform = "translate(" + (x * 10) + "px," + (y * 7) + "px)";
+          });
+          el.addEventListener("mouseleave", function () { el.style.transform = ""; });
+        });
+      })();
+
+      /* ============ Motion on/off toggle (saved choice) ============ */
+      (function () {
+        var btn = document.getElementById("motion-toggle");
+        var label = document.getElementById("motion-toggle-label");
+        if (!btn) return;
+        function paint() {
+          var off = motionIsOff();
+          btn.setAttribute("aria-pressed", off ? "true" : "false");
+          if (label) label.textContent = off ? "MOTION OFF" : "MOTION ON";
+        }
+        paint();
+        btn.addEventListener("click", function () {
+          var off = !motionIsOff();
+          document.documentElement.classList.toggle("motion-off", off);
+          window.__motionOff = off;
+          try { window.localStorage.setItem("ayan-motion", off ? "off" : "on"); } catch (e) {}
+          paint();
+          if (off) {
+            document.querySelectorAll(".reveal").forEach(function (n) { n.classList.add("in"); });
+            var g = document.getElementById("giant-word");
+            if (g) g.style.transform = "translateX(-50%)";
+            document.querySelectorAll(".magnetic").forEach(function (n) { n.style.transform = ""; });
+          }
+          document.dispatchEvent(new CustomEvent("motionchange", { detail: { off: off } }));
+        });
+      })();
+    </script>
+
+    <script>
+      /* ============ AGENT SWARM — parallel build + snip-drag accuracy ============
+         ~15 autonomous named CURSOR ARROWS rebuild the page from a blank
+         canvas like a team of designers working IN PARALLEL: every agent
+         owns its own element at the same time. Each placement is a
+         Windows Snipping-Tool style drag — the agent flies to the
+         element's EXACT top-left corner, snaps, then drags diagonally
+         to the exact bottom-right while a 1px selection rectangle
+         tracks its cursor tip precisely, with a live dimension chip
+         ("312 × 54") and square handles on release. The element then
+         materialises exactly inside those bounds. Headings are typed,
+         the giant PORTFOLIO word is assembled letter by letter (one
+         agent per letter, in parallel), stats count up, the Journey
+         line is drawn, tags are placed one agent each. Sections build
+         top-to-bottom with gentle auto-scroll; parallel work brings
+         the full build to roughly 25–35s. At the end the agents
+         gather, celebrate, fade out — the normal page remains.
+         Fully original, self-contained code. */
+      (function () {
+        var container = document.getElementById("agent-swarm");
+        if (!container) return;
+        var root = document.documentElement;
+        var bar = document.getElementById("swarm-bar");
+        var layersNowEl = document.getElementById("swarm-layers-now");
+        var progressEl = document.getElementById("swarm-progress");
+        var statusEl = document.getElementById("swarm-status");
+        var agentsLabelEl = document.getElementById("swarm-agents-label");
+        var workingEl = document.getElementById("swarm-working");
+        var crewDotsEl = document.getElementById("swarm-crew-dots");
+        var crewDots = [];
+        var skipBtn = document.getElementById("skip-intro");
+
+        var TOTAL_LAYERS = 401;
+        var MOBILE = window.innerWidth < 640;
+        var COUNT = MOBILE ? 11 : 15; /* smaller, calmer team — still parallel */
+        var SCALE = MOBILE ? 0.85 : 1; /* parallel work supplies the speed */
+
+        function motionOff() { return root.classList.contains("motion-off"); }
+        function introActive() { return root.classList.contains("intro-on"); }
+        function vw() { return window.innerWidth; }
+        function vh() { return window.innerHeight; }
+        function rand(a, b) { return a + Math.random() * (b - a); }
+        function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+        if (motionOff() || !introActive()) {
+          container.style.display = "none";
+          if (bar) bar.style.display = "none";
+          if (layersNowEl) layersNowEl.textContent = TOTAL_LAYERS;
+          if (progressEl) progressEl.style.transform = "scaleX(1)";
+          return;
+        }
+
+        /* Cursor colours: black-red theme family ONLY — crimson, scarlet,
+           ember / orange-red and warm-white shades. No rainbow palette,
+           and agents carry NO name tags: plain arrows everywhere. */
+        var COLORS = ["#e02334", "#b3121f", "#ff2e1f", "#ff4d2e", "#ff6b35", "#ff7a18", "#e85d3d", "#f5f0e8", "#efe6da", "#c81e2b", "#ff3b30", "#d92323"];
+        var ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2 L20 11.5 L12.8 13.2 L16.4 20.2 L13.4 21.7 L9.9 14.8 L6.2 18.6 Z" fill="{C}" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+        /* ---------- Layers counter ---------- */
+        var targetLayers = 0, shownLayers = 0;
+        function setLayersUI() {
+          if (layersNowEl) layersNowEl.textContent = shownLayers;
+          if (progressEl) progressEl.style.transform = "scaleX(" + (shownLayers / TOTAL_LAYERS) + ")";
+        }
+        /* Status/counter DOM writes throttled to ~5x/second — text and
+           bar updates on every job event were pure layout/paint churn */
+        setInterval(function () {
+          if (shownLayers < targetLayers) {
+            shownLayers += Math.max(1, Math.round((targetLayers - shownLayers) * 0.25));
+            if (shownLayers > targetLayers) shownLayers = targetLayers;
+            setLayersUI();
+          }
+        }, 200);
+        var sectionLabel = "starting from blank canvas…";
+        var activeJobs = 0;
+        var lastStatusAt = 0, statusTimer = null;
+        function refreshStatus() {
+          var now = Date.now();
+          var waitMs = 200 - (now - lastStatusAt);
+          if (waitMs > 0) {
+            if (!statusTimer) statusTimer = setTimeout(function () { statusTimer = null; refreshStatus(); }, waitMs);
+            return;
+          }
+          lastStatusAt = now;
+          if (statusEl) statusEl.textContent = sectionLabel;
+          if (agentsLabelEl) agentsLabelEl.textContent = COUNT + " agents";
+          /* Live crew count: rises and falls as agents join/leave jobs */
+          if (workingEl) workingEl.innerHTML = "<b>" + activeJobs + "</b> working";
+          for (var ci2 = 0; ci2 < crewDots.length; ci2++) crewDots[ci2].classList.toggle("on", ci2 < activeJobs);
+        }
+        function setStatus(t) { if (t) sectionLabel = t; refreshStatus(); }
+
+        /* ---------- Gate state (click-to-start) + progress watchdog ---------- */
+        var gateActive = false;
+        var gateHint = null;
+        var lastProgressAt = 0;
+
+        /* ---------- Build-driven camera (Phase 2): work drives,
+           screen follows ----------
+           Every job registers its element as a WAYPOINT in camQueue
+           (kept in strict document order) together with an estimate
+           of its remaining build time (drag + typing). The camera's
+           FRONT is the earliest unfinished waypoint — it advances
+           only when that element's job COMPLETES (frontDone), never
+           when a deeper job merely starts. This is the fix for
+           "titles discovered already finished": previously the front
+           was the deepest element that had STARTED, so the camera
+           raced hundreds of px below a section heading the instant
+           its batch fired, and the heading only began typing ~1.5s
+           later (after its snip-drag) — off camera.
+           HEADING LOCK: while a section's headJob runs, headLockElm
+           pins the front to that heading — deeper jobs in the same
+           batch still build in parallel for liveliness, but their
+           waypoints queue BEHIND the heading and cannot pull the
+           camera past it until its typing completes.
+           FRAMING: the front builds while its top travels the
+           middle band — from the ~55% line to the ~30% line;
+           elements tall enough that their bottom would pass the
+           ~92% line are framed at the position where the whole
+           element fits instead, and their band collapses to that
+           one position. At the far line, while a build still runs,
+           the camera oscillates gently between the band edges with
+           proportional control (speed falls to zero AT each line),
+           and may settle only when the build is nearly done.
+           PACING — SPEED FOLLOWS THE BUILD: inside the band the
+           camera's speed is the remaining band distance divided by
+           the front's remaining build time, recomputed every frame
+           — and jobs re-report that remaining time from their real
+           progress (per typed character, per count-up tick), so a
+           long build automatically slows the glide to a drift and
+           a quick job lets it sweep faster. The approach to the
+           band is an "arrive" profile that sheds speed on a sqrt
+           curve and crosses the band line at the band's own
+           traverse speed, so entry momentum never blasts through
+           a slow segment. All
+           desired speeds pass through ONE acceleration limiter, so
+           velocity itself is a continuous curve end to end — lock
+           engage/release, front advance, ceiling switches and the
+           in-band turn included (the turn is proportional: it
+           eases through zero, never snaps). Scroll is written from
+           a sub-pixel float accumulator, so even a 20px/s drift
+           moves smoothly instead of in 1px steps.
+           When the queue is empty, a gentle approach toward the next
+           section trigger (pendingDocY, ~85% entry line) keeps the
+           flow continuous so the next phase can fire. Jobs NEVER
+           wait for the camera. Phase 1 is unchanged: heroBuilt gates
+           all motion until the whole first page is built at
+           scrollY=0. */
+        var camOn = false;
+        var heroBuilt = false; /* PHASE 1 gate: camera stays at scrollY=0 until the whole first page is built */
+        var camVel = 0;        /* current pursuit velocity, px/s */
+        var camPos = null;     /* float scroll accumulator — sub-pixel smooth; resyncs after external jumps */
+        var camMaxScroll = 0, camMaxScrollAt = 0; /* cached page-bottom limit (scrollHeight reads force layout) */
+        var camDragHolds = 0;  /* legacy counter, no longer read */
+        var camQueue = [];     /* waypoints {elm, docY, h, remainMs, done} in document order */
+        var camIdx = 0;        /* index of the current front waypoint */
+        var headLockElm = null;/* heading element whose headJob is running — the front is pinned to it */
+        var pendingDocY = 0;   /* doc Y of the next section trigger whose turn has come */
+        var CAM_MAXACCEL = 560; /* the ONE velocity ramp rate — every branch feeds desired speed through it */
+        /* CONTINUOUS-MOTION FLOORS (Phase 2): on the approach the
+           camera never crawls below CAM_FLOOR px/s — a heading lock
+           slows the scroll, it never freezes it. Inside the band the
+           pace is the build's own (band distance ÷ remaining build
+           time) with a CAM_BAND_FLOOR drift minimum, and at the far
+           line a proportional oscillation keeps visible motion
+           alive for as long as the build runs; only when the build
+           is nearly done may the camera settle, ready for the next
+           front. */
+        var CAM_FLOOR = 88, CAM_DRIFT = 24, CAM_SLOW = 10, CAM_BAND_FLOOR = 22;
+        /* AUTO-TOUR pacing (Swarmline-style): one continuous glide —
+           SLOWER while the front section is actively building
+           (CAM_BUILD_CEIL), QUICKER across finished stretches and on
+           the approach to the next section (CAM_TOUR_CEIL). The
+           acceleration limit keeps every change of pace a glide,
+           never a jerk, and CAM_FLOOR means it never freezes. */
+        var CAM_BUILD_CEIL = 300, CAM_TOUR_CEIL = 460;
+        /* ---------- SCROLL-DRIVEN BUILD ENGINE (Phase 2) ----------
+           Phase 1 (hero) is timed/auto as before. The moment the
+           hero completes, MANUAL mode begins: there is NO autonomous
+           camera driver in Phase 2 at all — camTick returns instantly
+           and nothing calls window.scrollTo on the build's behalf.
+           The user's own downward scroll is the engine:
+           · every downward pixel the user scrolls banks "build
+             energy" (PX_TO_MS ms of build time per pixel) into
+             buildEnergy;
+           · the virtual build clock (vClockMs) advances only by
+             spending that banked energy, at up to ~real-time speed
+             normally and faster when a lot is banked (fast scroll =
+             fast build; a jump to the bottom banks enough to finish
+             everything in order, quickly);
+           · every wait(), typing step, count-up, line draw and agent
+             flight is measured on vClockMs, and agent springs only
+             integrate while energy is being spent — so when the user
+             STOPS scrolling and the bank drains, EVERYTHING freezes
+             exactly in place: agents mid-flight, typing mid-word,
+             drags mid-way. Scrolling again banks more energy and the
+             build resumes from the exact frozen state.
+           · scrolling up banks nothing and vClockMs never runs
+             backwards, so nothing ever un-builds (progress = max). */
+        var manualMode = false;
+        var vClockMs = 0;          /* virtual build clock — the ONLY clock jobs run on */
+        var buildEnergy = 0;       /* ms of build time banked by downward scroll, not yet spent */
+        var lastManualScrollY = 0; /* scrollY at the last frame in manual mode */
+        var lastScrollActivityAt = 0; /* last time the user scrolled down in manual mode */
+        var PX_TO_MS = 16;         /* build ms banked per downward pixel scrolled — CALIBRATED so the visible thing finishes in view: a front element crosses the working band (entering at the ~98% line → leaving the upper band at the ~20% line) over ~700px of scroll, banking ~11s of build time, while the most expensive front job (a section heading: drag + typing + grow) costs ~3s of build time. A full Phase-2 descent (~3,700px) banks ~59s against a ~35–40s critical path, so the build leads the scroll instead of trailing it */
+        function noteFront(elm, estMs) {
+          if (!elm || !elm.getBoundingClientRect) return;
+          for (var i = 0; i < camQueue.length; i++) if (camQueue[i].elm === elm) return; /* one waypoint per element */
+          var y = elm.getBoundingClientRect().top + (window.scrollY || 0);
+          var wp = { elm: elm, docY: y, h: elm.offsetHeight || 0, remainMs: (estMs || 1800) * SCALE, done: false };
+          /* insert in document order, but never into the finished region */
+          var pos = camQueue.length;
+          while (pos > camIdx && camQueue[pos - 1].docY > y) pos--;
+          camQueue.splice(pos, 0, wp);
+        }
+        function frontDone(elm) {
+          for (var i = 0; i < camQueue.length; i++) if (camQueue[i].elm === elm) { camQueue[i].done = true; break; }
+          if (headLockElm === elm) headLockElm = null; /* heading lock releases when its typing completes */
+        }
+        function resetCam() { camQueue = []; camIdx = 0; headLockElm = null; pendingDocY = 0; camVel = 0; camPos = null; camMaxScroll = 0; }
+        /* Jobs re-report their TRUE remaining build time as they
+           progress (per typed character, per count-up tick), so the
+           camera's pace tracks the real build — not the one-off
+           estimate made when the job started */
+        function reportRemain(elm, ms) {
+          if (!elm) return;
+          for (var i = camIdx; i < camQueue.length; i++) {
+            if (camQueue[i].elm === elm) { camQueue[i].remainMs = Math.max(60, ms * SCALE); return; }
+          }
+        }
+        var lastCamY = -1;
+        function camTick(dt) {
+          if (manualMode) return; /* Phase 2: no autonomous camera — the user scrolls, the build follows */
+          if (!camOn || gateActive || !introActive()) return;
+          if (!heroBuilt) return; /* PHASE 1: camera locked at the top while page one builds */
+          var dtS = Math.min(0.05, dt / 1000);
+          if (dtS <= 0) return;
+          var H = vh();
+          /* maxScroll is CACHED (refreshed ~2.5x/s): reading
+             scrollHeight every frame forces a layout pass whenever
+             the build has dirtied the tree — pure judder fuel */
+          var nowMs = performance.now();
+          if (!camMaxScroll || nowMs - camMaxScrollAt > 400) {
+            camMaxScroll = Math.max(0, document.documentElement.scrollHeight - H);
+            camMaxScrollAt = nowMs;
+          }
+          var maxScroll = camMaxScroll;
+          /* Sub-pixel float accumulator: the scroll position is
+             integrated here and written once per frame — never read
+             back from window.scrollY (which quantises to whole
+             pixels in some engines and turned the 10–24px/s creep
+             into visible 1px steps). Resync only after a big
+             external jump (user scroll, resize, replay reset). */
+          var realY = window.scrollY || 0;
+          if (camPos === null || Math.abs(camPos - realY) > 80) camPos = realY;
+          var cur = camPos;
+          /* Advance the front past finished waypoints only — and
+             past a waypoint whose job was abandoned long ago (its
+             estimate ran out >3s back), so the camera can never be
+             held hostage by a dead job. */
+          while (camIdx < camQueue.length) {
+            var cw = camQueue[camIdx];
+            if (cw.done || cw.remainMs < -3000) { cw.done = true; if (headLockElm === cw.elm) headLockElm = null; camIdx++; continue; }
+            break;
+          }
+          /* Front selection: the earliest unfinished waypoint —
+             except that a locked heading outranks an unfinished
+             earlier waypoint, so its typing is never missed. */
+          var fi = camIdx, w = null;
+          if (headLockElm) {
+            for (var k = camIdx; k < camQueue.length; k++) if (camQueue[k].elm === headLockElm && !camQueue[k].done) { fi = k; break; }
+          }
+          if (fi < camQueue.length) w = camQueue[fi];
+          var desired = 0, mayReverse = false;
+          if (w) {
+            w.remainMs -= dt; /* the front's build clock runs in real time; jobs also re-report it from actual progress (reportRemain) */
+            var remainS = Math.max(0.25, w.remainMs / 1000);
+            /* THE BAND: the front builds while its top travels from
+               the ~55% line (nearY) to the ~30% line (farY). Tall
+               elements are framed so the whole element fits above
+               the ~92% line instead, and their band collapses to
+               that single fitting position. */
+            var nearY = w.docY - H * 0.55;
+            if (w.h > H * 0.37) nearY = Math.max(nearY, w.docY + w.h - H * 0.92);
+            nearY = clamp(nearY, 0, maxScroll);
+            var farY = w.h > H * 0.37 ? nearY : clamp(w.docY - H * 0.30, nearY, maxScroll);
+            if (cur >= maxScroll - 2) {
+              desired = 0; /* page bottom: the one permitted full stop */
+            } else if (cur < nearY - 4) {
+              /* APPROACH — an "arrive" profile, not a charge: the
+                 sqrt term sheds speed as the band nears, and the
+                 camera crosses the band line AT the band's own
+                 traverse speed (vBand — band span ÷ remaining build
+                 time). Without this, entry momentum carried the
+                 camera through a typing heading's whole band in the
+                 first second of a 4–5s build, and the pacing rule
+                 only ever applied on paper. Floored so the glide
+                 never crawls, tour-capped on long finished runs */
+              var vBand = clamp(Math.max(60, farY - nearY) / remainS, CAM_BAND_FLOOR, CAM_BUILD_CEIL);
+              desired = clamp(vBand + Math.sqrt(2 * 140 * (nearY - cur)), 0, CAM_TOUR_CEIL);
+              if (nearY - cur > 40) desired = Math.max(desired, CAM_FLOOR);
+            } else if (!w.osc && farY - cur > 36) {
+              /* IN-BAND TRAVERSE — the pacing rule: the remaining
+                 band distance divided by the remaining build time.
+                 A long typing passage automatically slows the
+                 glide to a drift; a quick place/copy job lets it
+                 sweep. Recomputed every frame from the job's
+                 live-reported remaining time, so the speed tracks
+                 the REAL build, not a one-off guess. */
+              desired = clamp((farY - cur) / remainS, CAM_BAND_FLOOR, CAM_BUILD_CEIL);
+            } else if (w.remainMs > 450) {
+              /* AT THE FAR LINE, build still running: oscillate
+                 gently between the band edges with PROPORTIONAL
+                 control — desired speed falls to zero AT each line,
+                 so the turn eases through a stop instead of
+                 reversing instantly, and motion never fully dies */
+              w.osc = true;
+              if (w.oscDir === undefined) w.oscDir = -1;
+              if (w.oscDir > 0 && cur >= farY - 6) w.oscDir = -1;
+              else if (w.oscDir < 0 && cur <= nearY + 6) w.oscDir = 1;
+              var oscT = w.oscDir > 0 ? farY : nearY;
+              desired = clamp((oscT - cur) * 0.16, -30, 34);
+              mayReverse = true;
+            } else {
+              /* Build nearly done: settle proportionally onto the
+                 far line while the front hands over in order */
+              desired = clamp((farY - cur) * 0.16, -30, 34);
+              mayReverse = desired < 0;
+            }
+          } else if (pendingDocY > 0) {
+            /* Queue empty: drift toward the next section so its
+               trigger crosses the 85% fire line and its jobs fire.
+               The approach line is 70% — WELL above that fire line.
+               Aiming at 85% itself deadlocked the scroll for good:
+               the stop-short dead zone below always left the trigger
+               a few px under its fire line, so the next phase never
+               fired, no new waypoints appeared, and the camera
+               stopped forever right after the hero. At 70% the
+               trigger crosses its fire line while the camera is
+               still approaching, and even a full stop leaves it
+               comfortably inside the viewport. */
+            var target = clamp(pendingDocY - H * 0.7, 0, maxScroll);
+            var pdist = target - cur;
+            /* Same continuous-motion floor on the approach: >40px
+               out, never slower than CAM_FLOOR; in the last stretch
+               (the intact 4px dead zone) never slower than the
+               gentle CAM_DRIFT creep — no dead stop before the next
+               section's jobs fire. */
+            if (cur < maxScroll - 2 && pdist > 40) desired = Math.max(clamp(Math.sqrt(2 * 140 * pdist), 0, CAM_TOUR_CEIL), CAM_FLOOR);
+            else if (cur < maxScroll - 2 && pdist > 4) desired = Math.max(clamp(Math.sqrt(2 * 140 * pdist), 0, CAM_TOUR_CEIL), CAM_DRIFT);
+          }
+          /* ONE acceleration-limited integration for every branch:
+             desired speed may change stepwise (front advance, lock
+             engage/release, ceiling switch), but VELOCITY never
+             does — it ramps at CAM_MAXACCEL, so the speed curve is
+             continuous end to end, turns included. A reversal is
+             only ever the oscillation leaving the way it came:
+             through zero, at the same limited rate, never snapped. */
+          var dv = clamp(desired - camVel, -CAM_MAXACCEL * dtS, CAM_MAXACCEL * dtS);
+          camVel = camVel + dv;
+          if (!mayReverse && camVel < 0) camVel = Math.max(camVel, -30);
+          var newY = clamp(cur + camVel * dtS, 0, maxScroll);
+          camPos = newY;
+          if (Math.abs(newY - cur) < 0.01) return;
+          lastCamY = newY;
+          window.scrollTo({ top: newY, left: 0, behavior: "instant" });
+          autoScrolling = true;
+          lastAutoScrollAt = Date.now();
+        }
+
+        /* ---------- Agents ---------- */
+        var agents = [];
+        for (var i = 0; i < COUNT; i++) {
+          var color = COLORS[i % COLORS.length];
+          var el = document.createElement("div");
+          el.className = "agent";
+          el.innerHTML = ARROW.replace("{C}", color);
+          container.appendChild(el);
+          var edge = i % 4;
+          var sx = edge === 0 ? -50 : edge === 1 ? vw() + 50 : rand(0, vw());
+          var sy = edge === 2 ? -50 : edge === 3 ? vh() + 50 : rand(0, vh());
+          agents.push({
+            el: el, color: color, x: sx, y: sy, tx: sx, ty: sy,
+            ease: rand(0.05, 0.09), baseEase: 0, vx: 0, vy: 0, phase: rand(0, Math.PI * 2),
+            wobble: rand(3, 11), clickAt: rand(1500, 5000), drag: null, busy: false,
+            /* Organic gate swirl: every agent mills around the centre at
+               its OWN radius, speed and phase — a loose cloud, never a
+               single-file ring, never lockstep, never perfect geometry.
+               A few agents drift in and out or circle the other way. */
+            swirl: {
+              rad: (30 + Math.pow(Math.random(), 1.35) * 185) * (MOBILE ? 0.7 : 1),
+              speed: rand(0.22, 0.55) * (i % 6 === 5 ? -1 : 1),
+              phase: rand(0, Math.PI * 2),
+              bobA: rand(3, 10), bobS: rand(0.5, 1.5),
+              breathe: rand(8, 26), breatheS: rand(0.2, 0.45)
+            }
+          });
+          agents[i].baseEase = agents[i].ease;
+          el.style.transform = "translate3d(" + sx + "px," + sy + "px,0)"; /* placed from the first frame — never a stack of arrows at the corner */
+        }
+        if (agentsLabelEl) agentsLabelEl.textContent = COUNT + " agents";
+        if (crewDotsEl) {
+          for (var cd = 0; cd < COUNT; cd++) { var cdot = document.createElement("i"); crewDotsEl.appendChild(cdot); crewDots.push(cdot); }
+        }
+
+        /* Ripples are POOLED and capped: max 6 alive at once, nodes are
+           reused instead of created/destroyed on every click */
+        var ripplePool = [], ripplesAlive = 0;
+        function doClick(a) {
+          a.el.classList.remove("is-clicking");
+          void a.el.offsetWidth;
+          a.el.classList.add("is-clicking");
+          if (ripplesAlive >= 6) return;
+          var r = ripplePool.pop();
+          if (!r) { r = document.createElement("div"); r.className = "click-ripple"; }
+          r.style.left = a.x + "px"; r.style.top = a.y + "px";
+          r.style.borderColor = a.color;
+          container.appendChild(r);
+          ripplesAlive++;
+          setTimeout(function () { r.remove(); ripplesAlive--; if (ripplePool.length < 6) ripplePool.push(r); }, 650);
+        }
+
+        /* ---------- Movement loop — the snip rectangle tracks the
+           dragging agent's cursor TIP exactly, every frame ---------- */
+        var lastT = performance.now();
+        var lastScrollY = 0;
+        var buildRate = 1; /* effective build rate this frame (virtual ms per wall ms): 0 = frozen (manual mode, no scroll energy), 1 = real time, >1 = fast-scroll catch-up. Fractional on purpose — the springs integrate this exact rate, so motion is fluid at any scroll pace */
+        function frame(now) {
+          requestAnimationFrame(frame);
+          var dt = Math.min(50, now - lastT);
+          lastT = now;
+          if (motionOff() || container.style.display === "none") return;
+          /* --- Advance the virtual build clock ---
+             Phase 1 / gate: real time. Phase 2 (manual): bank this
+             frame's downward scroll delta as energy, then spend it.
+             Speed multiplier grows with the bank, so a fast scroll
+             (or a jump to the bottom) builds fast, a slow scroll
+             builds slow, and no scroll = no spend = total freeze
+             once the small banked remainder drains. */
+          if (!manualMode) {
+            vClockMs += dt;
+            buildRate = 1;
+          } else {
+            var mY = window.scrollY || 0;
+            var dY = mY - lastManualScrollY;
+            lastManualScrollY = mY;
+            if (dY > 0) { buildEnergy += dY * PX_TO_MS; lastScrollActivityAt = Date.now(); }
+            if (buildEnergy > 0.5) {
+              var atBottom = mY >= Math.max(0, document.documentElement.scrollHeight - vh()) - 2;
+              var mult = clamp(buildEnergy / 900, 1, atBottom ? 12 : 8);
+              var spend = Math.min(dt * mult, buildEnergy);
+              buildEnergy -= spend;
+              vClockMs += spend;
+              buildRate = spend / dt; /* CONTINUOUS drain: the effective build rate this frame (virtual ms per wall ms) — fractional, never rounded to whole steps, so typing and drags flow instead of lurching in chunks */
+            } else {
+              buildRate = 0; /* frozen exactly in place — agents hold, typing holds, drags hold */
+            }
+          }
+          camTick(dt); /* no-op in Phase 2 (manualMode) — kept for Phase 1 parity; the user is the camera now */
+          var t = now * 0.001;
+          var VW = vw(), VH = vh(); /* viewport read once per frame, not per agent */
+          /* How far the page scrolled since the last frame — a live drag
+             with it, so the selection rectangle stays glued to its
+             element while the page drifts underneath */
+          var scNow = window.scrollY || 0;
+          var sDelta = scNow - lastScrollY;
+          lastScrollY = scNow;
+          for (var j = 0; j < agents.length; j++) {
+            var a = agents[j];
+            if (gateActive) {
+              /* ORGANIC SWIRL — the team mills around the centre in a
+                 loose cloud: each agent keeps its own radius (some close
+                 in, some far out), its own speed and direction, a slow
+                 in-out breathing of that radius, and a small vertical
+                 bob. Deliberately imperfect — no ring, no queue, no
+                 lockstep, and no spinner graphic anywhere. */
+              var sw = a.swirl;
+              var ang = sw.phase + t * sw.speed;
+              var radNow = sw.rad + Math.sin(t * sw.breatheS + sw.phase * 1.7) * sw.breathe;
+              a.tx = VW / 2 + Math.cos(ang) * radNow - 6;
+              a.ty = VH * 0.44 + Math.sin(ang) * radNow * 0.8 + Math.sin(t * sw.bobS + sw.phase) * sw.bobA - 6;
+            }
+            /* Critically-damped SPRING motion (velocity-carrying):
+               the old exponential ease started every leg at MAX
+               speed and turned hard corners at each new target. A
+               spring departs gently, cruises, and lands softly —
+               and because velocity carries across target changes,
+               paths curve through waypoints instead of kinking:
+               gate swirl -> first job, job -> job, and the finish
+               settle all flow with no speed jump. Stiffness derives
+               from the agent's existing ease value, so the tuned
+               job timings (and the waitForAgent budgets behind
+               them) stay as they were; while dragging, the spring
+               stiffens so the snip rectangle stays glued to its
+               element under a moving camera. */
+            var tau = -0.0167 / Math.log(1 - a.ease);
+            var om = 1 / Math.max(0.045, tau);
+            if (a.drag) om *= 2.2;
+            /* Spring integration runs on BUILD time, not wall time:
+               buildRate is 0 in manual mode when no scroll energy
+               remains — the agent freezes mid-flight with its
+               velocity intact, and resumes from exactly there when
+               the user scrolls again. buildRate > 1 = fast-scroll
+               catch-up (agents move faster while lots is banked). */
+            if (buildRate > 0) {
+              /* Integrate the spring over the frame's EFFECTIVE build
+                 time (wall dt × buildRate), split into ≤20ms sub-steps
+                 for stability. Because buildRate is fractional, agent
+                 speed scales continuously with the scroll pace — no
+                 1-step/2-step quantization, no stop-start judder */
+              var totalDt = manualMode ? Math.min(0.09, (dt / 1000) * buildRate) : Math.min(0.05, dt / 1000);
+              var steps = Math.max(1, Math.ceil(totalDt / 0.02));
+              var dtF = totalDt / steps;
+              for (var st = 0; st < steps; st++) {
+                a.vx += (om * om * (a.tx - a.x) - 2 * om * a.vx) * dtF;
+                a.vy += (om * om * (a.ty - a.y) - 2 * om * a.vy) * dtF;
+                var spd = Math.hypot(a.vx, a.vy);
+                if (spd > 5200) { a.vx = a.vx / spd * 5200; a.vy = a.vy / spd * 5200; }
+                a.x += a.vx * dtF;
+                a.y += a.vy * dtF;
+              }
+            }
+            var wobX = a.drag ? 0 : Math.sin(t * 1.7 + a.phase) * a.wobble * 0.3;
+            var wobY = a.drag ? 0 : Math.cos(t * 1.4 + a.phase) * a.wobble * 0.3;
+            var ang = a.drag ? 0 : clamp(a.vx * 0.012, -14, 14);
+            a.el.style.transform = "translate3d(" + (a.x + wobX) + "px," + (a.y + wobY) + "px,0) rotate(" + ang + "deg)"; /* compositor-only */
+            if (a.drag) {
+              /* Rectangle edges = cursor tip position, pixel-precise.
+                 While the camera drifts, the box tracks its element
+                 LIVE: with an element reference the corners are
+                 re-measured every frame and the agent chases the
+                 element's real bottom-right corner; without one
+                 (fixed header links) the box simply shifts by the
+                 frame's scroll delta. Accuracy survives the moving
+                 camera — the camera never has to stop for a drag. */
+              var d = a.drag;
+              if (d.elm && d.doc) {
+                /* NO getBoundingClientRect in the hot loop: the element's
+                   DOCUMENT rect was cached when the drag began; its
+                   viewport position is just doc minus the one scrollY
+                   read this frame. Pixel-exact, zero layout thrash. */
+                d.sx = d.doc.left; d.sy = d.doc.top - scNow;
+                d.box.style.left = d.sx + "px";
+                d.box.style.top = d.sy + "px";
+                a.tx = d.doc.right; a.ty = d.doc.bottom - scNow;
+              } else if (!d.fixed && !d.fixedElm && sDelta) {
+                d.sy -= sDelta;
+                d.box.style.top = (parseFloat(d.box.style.top) - sDelta) + "px";
+                a.ty -= sDelta;
+              }
+              var w = Math.max(0, a.x - d.sx), h = Math.max(0, a.y - d.sy);
+              d.box.style.width = w + "px";
+              d.box.style.height = h + "px";
+              d.dim.textContent = Math.round(w) + " × " + Math.round(h);
+            } else if (introActive() && !gateActive && !a.busy && buildRate > 0 && now > a.clickAt && Math.abs(a.x - a.tx) < 9 && Math.abs(a.y - a.ty) < 9 && Math.abs(a.vx) < 70 && Math.abs(a.vy) < 70) {
+              doClick(a);
+              a.clickAt = now + rand(2800, 6500);
+            }
+            /* A supervising (typing) agent stays beside its element
+               while the camera drifts — its hover point is re-aimed
+               at the element's live position every frame */
+            /* Hover re-aim throttled to ~7x/sec per agent (was: a
+               getBoundingClientRect for every typing agent, every frame) */
+            if (a.hoverElm && !a.drag && !gateActive && now - (a.lastHoverAt || 0) > 140) {
+              a.lastHoverAt = now;
+              hoverBeside(a, a.hoverElm);
+            }
+          }
+        }
+        requestAnimationFrame(frame);
+
+        /* Support crew: only a FEW idle agents (max 3) drift near the
+           element being built — the rest stay parked at the edges, so
+           the scene stays calm instead of a crowd ringing every job */
+        function ringSupport(rect, except) {
+          var placed = 0;
+          agents.forEach(function (a, idx) {
+            if (a.busy || except.indexOf(a) !== -1) return;
+            if (placed >= 3) return;
+            placed++;
+            var cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+            var ang = (idx / agents.length) * Math.PI * 2 + rand(-0.25, 0.25);
+            var rx = rect.width / 2 + rand(34, 96), ry = rect.height / 2 + rand(28, 80);
+            a.tx = clamp(cx + Math.cos(ang) * rx - 6, 4, vw() - 36);
+            a.ty = clamp(cy + Math.sin(ang) * ry - 6, 64, vh() - 46);
+          });
+        }
+
+        /* ---------- DOM references & prep ---------- */
+        var buildables = Array.prototype.slice.call(document.querySelectorAll(".buildable"));
+        var giantEl = document.getElementById("giant-word");
+        var heroH1 = document.querySelector(".hero h1");
+        var iamEl = document.querySelector(".hero .hero-iam");
+        var typedEl = document.getElementById("typed");
+        var roleEl = document.querySelector(".hero .role");
+        var roleCaret = roleEl ? roleEl.querySelector(".caret") : null;
+        var statsEl = document.querySelector(".hero-stats");
+        var timelineEl = document.querySelector(".timeline");
+        var contactWrap = document.querySelector("#contact .buildable");
+        var ROLE_TEXT = "Polytechnic Student";
+        var ROLE_TEXT_2 = "Cybersecurity Enthusiast";
+
+        var giantLetters = [];
+        function splitGiant() {
+          if (!giantEl || giantEl.dataset.split) return;
+          giantEl.dataset.split = "1";
+          var text = giantEl.textContent;
+          giantEl.textContent = "";
+          text.split("").forEach(function (ch) {
+            var s = document.createElement("span");
+            s.className = "giant-letter";
+            s.textContent = ch;
+            giantEl.appendChild(s);
+            giantLetters.push(s);
+          });
+        }
+        function splitChars(elm) {
+          if (!elm || elm.dataset.split) return;
+          elm.dataset.split = "1";
+          (function walk(node) {
+            Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+              if (n.nodeType === 3) {
+                var frag = document.createDocumentFragment();
+                n.textContent.split("").forEach(function (ch) {
+                  var s = document.createElement("span");
+                  s.className = "type-char";
+                  s.textContent = ch === " " ? " " : ch;
+                  frag.appendChild(s);
+                });
+                node.replaceChild(frag, n);
+              } else if (n.nodeType === 1) { walk(n); }
+            });
+          })(elm);
+        }
+        var headParas = [];
+        document.querySelectorAll(".rule-head").forEach(function (h) {
+          var p = h.querySelector("p");
+          if (p) headParas.push(p);
+        });
+        var contactP = contactWrap ? contactWrap.querySelector("p") : null;
+        var contactSocials = contactWrap ? Array.prototype.slice.call(contactWrap.querySelectorAll(".social")) : [];
+        var statNums = [];
+        if (statsEl) {
+          statsEl.querySelectorAll(".num").forEach(function (n) {
+            statNums.push({ el: n, val: parseInt(n.textContent, 10) || 0, suffix: n.textContent.replace(/[0-9]/g, "") });
+          });
+        }
+        function prep() {
+          splitGiant();
+          splitChars(iamEl);
+          splitChars(heroH1);
+          document.querySelectorAll(".rule-head h2").forEach(splitChars);
+          if (contactWrap) splitChars(contactWrap.querySelector("h2"));
+        }
+
+        /* ---------- Run control ---------- */
+        var runId = 0;
+        var autoScrolling = false;
+        var lastAutoScrollAt = 0;
+        var introStartedAt = 0; /* grace window: our own restart scroll must never read as a user skip */
+        var fadeTimeout = null;
+        var totalJobs = 0, doneJobs = 0;
+
+        function wait(ms, id) {
+          /* Measured on the VIRTUAL build clock: real time in
+             Phase 1, scroll-banked time in Phase 2 — so a wait
+             freezes solid when the user stops scrolling and resumes
+             from the exact point when they scroll again. */
+          var total = ms * SCALE, startV = vClockMs;
+          return new Promise(function (res) {
+            var iv = setInterval(function () {
+              if (id !== undefined && id !== runId) { clearInterval(iv); res(false); return; }
+              if (vClockMs - startV >= total) { clearInterval(iv); res(true); }
+            }, 12); /* 12ms polling: at high spend rates a 30ms poll let whole bursts of characters land in one step — this keeps typing fluid */
+          });
+        }
+        function alive(id) { return id === runId; }
+        function jobDone() {
+          doneJobs++;
+          lastProgressAt = Date.now(); /* watchdog heartbeat */
+          if (totalJobs > 0) targetLayers = Math.round(TOTAL_LAYERS * doneJobs / totalJobs);
+        }
+
+        /* TRUE final bounds of an element (its layout size, with the
+           intro entrance transform backed out) — this is what the
+           drag must match, pixel for pixel */
+        function finalRect(elm) {
+          var r = elm.getBoundingClientRect();
+          var w = elm.offsetWidth || r.width;
+          var h = elm.offsetHeight || r.height;
+          var dx = 0, dy = 18;
+          if (elm.classList.contains("enter-left")) { dx = -52; dy = 0; }
+          else if (elm.classList.contains("enter-right")) { dx = 52; dy = 0; }
+          var left = (r.left + r.width / 2) - w / 2 - dx;
+          var top = (r.top + r.height / 2) - h / 2 - dy;
+          return { left: left, top: top, right: left + w, bottom: top + h, width: w, height: h };
+        }
+        function placeElement(elm, instant) {
+          if (!elm) return;
+          elm.classList.add("built");
+          elm.classList.add("in");
+          var tr = elm.closest(".tag-row");
+          if (tr) tr.classList.add("in");
+          if (!instant) {
+            elm.classList.add("just-built");
+            setTimeout(function () { elm.classList.remove("just-built"); }, 950);
+          }
+        }
+        function nudge(elm, fromLeft) {
+          if (!elm.animate) return;
+          try {
+            elm.animate([
+              { transform: "translate(" + (fromLeft ? -9 : 9) + "px, -5px)" },
+              { transform: "translate(0px, 0px)" }
+            ], { duration: 380, easing: "cubic-bezier(.2,.9,.3,1.2)" });
+          } catch (e) {}
+        }
+        /* ---------- Scroll = the pursuit camera above ----------
+           Nothing in the build ever waits on scroll position being
+           "settled" and nothing jumps: the pursuit camera follows
+           the build front, and phases fire when their trigger
+           element crosses the lower viewport (see runSequence).
+           easeScrollTo survives only for the single final glide
+           back to the top. */
+        function easeScrollTo(targetY, dur, id) {
+          return new Promise(function (res) {
+            targetY = Math.max(0, targetY);
+            var startY = window.scrollY || 0;
+            var dist = targetY - startY;
+            if (Math.abs(dist) < 24) { res(alive(id)); return; }
+            autoScrolling = true;
+            lastAutoScrollAt = Date.now();
+            var t0 = performance.now();
+            var dd = dur || clamp(Math.abs(dist) * 0.5, 520, 1500);
+            var iv = setInterval(function () {
+              if (!alive(id)) { clearInterval(iv); autoScrolling = false; res(false); return; }
+              var p = Math.min(1, (performance.now() - t0) / dd);
+              var e = p * p * p * (p * (p * 6 - 15) + 10); /* smootherstep: zero velocity at BOTH ends — the old ease-out cubic started this glide at full speed, a visible lurch */
+              window.scrollTo({ top: startY + dist * e, left: 0, behavior: "instant" });
+              lastAutoScrollAt = Date.now();
+              if (p >= 1) {
+                clearInterval(iv);
+                setTimeout(function () { autoScrolling = false; lastAutoScrollAt = Date.now(); }, 260);
+                res(true);
+              }
+            }, 16);
+          });
+        }
+        function waitForAgent(a, x, y, timeout, id) {
+          /* Timeout is in BUILD time too: a frozen agent (user not
+             scrolling) must never "time out" — it is waiting, not
+             stuck. The budget only burns while the build clock runs. */
+          var startV = vClockMs;
+          return new Promise(function (res) {
+            var iv = setInterval(function () {
+              if (!alive(id)) { clearInterval(iv); res(false); return; }
+              var d = Math.hypot(a.x - x, a.y - y);
+              if (d < 5 || vClockMs - startV > timeout) { clearInterval(iv); res(true); }
+            }, 30);
+          });
+        }
+
+        /* ============ THE SNIP DRAG — one agent, one element ============
+           1. Fly to the EXACT top-left corner. 2. Snap pause.
+           3. Drag diagonally to the EXACT bottom-right; the frame loop
+           grows the selection rect from the cursor tip itself, with a
+           live dimension chip. 4. Release: handles show, tiny flash +
+           click, element materialises inside the exact bounds. */
+        /* Teleport an agent exactly onto a point (snip corners,
+           copy/paste landings): position AND target jump together
+           and spring velocity zeroes, so the spring never slings
+           the cursor past the corner it just snapped to */
+        function snapAgent(a, x, y) { a.x = a.tx = x; a.y = a.ty = y; a.vx = 0; a.vy = 0; }
+        async function snipDrag(a, rect, id, speed, elm, fixed) {
+          camDragHolds++;
+          /* --- fly to top-left corner --- */
+          a.ease = 0.16;
+          a.tx = rect.left; a.ty = rect.top;
+          if (!(await waitForAgent(a, rect.left, rect.top, 750, id))) { camDragHolds--; return false; }
+          if (elm) rect = finalRect(elm); /* the camera may have drifted during the flight — re-measure */
+          snapAgent(a, rect.left, rect.top); /* snap exactly onto the corner */
+          a.el.classList.add("is-snapping");
+          setTimeout(function () { a.el.classList.remove("is-snapping"); }, 240);
+          if (!(await wait(speed === "tiny" || speed === "fast" ? 70 : 120, id))) return false;
+
+          /* --- build the selection rectangle at the corner --- */
+          var box = document.createElement("div");
+          box.className = "snip-box";
+          box.style.left = rect.left + "px";
+          box.style.top = rect.top + "px";
+          box.style.width = "0px";
+          box.style.height = "0px";
+          var dim = document.createElement("span");
+          dim.className = "snip-dim" + (rect.top < 100 ? " below" : "");
+          dim.textContent = "0 × 0";
+          box.appendChild(dim);
+          [[0, 0], [50, 0], [100, 0], [0, 50], [100, 50], [0, 100], [50, 100], [100, 100]].forEach(function (pos) {
+            var hd = document.createElement("i");
+            hd.className = "snip-handle";
+            hd.style.left = "calc(" + pos[0] + "% - 4px)";
+            hd.style.top = "calc(" + pos[1] + "% - 4px)";
+            box.appendChild(hd);
+          });
+          container.appendChild(box);
+
+          /* --- drag diagonally: tip drives the rectangle --- */
+          var isFixedElm = !!fixed || !!(elm && elm.closest && elm.closest(".site-head"));
+          var docRect = null;
+          if (elm && !isFixedElm) {
+            var sc0 = window.scrollY || 0;
+            docRect = { left: rect.left, top: rect.top + sc0, right: rect.right, bottom: rect.bottom + sc0 };
+          }
+          a.drag = { box: box, dim: dim, sx: rect.left, sy: rect.top, elm: elm || null, fixed: !!fixed, fixedElm: isFixedElm, doc: docRect };
+          a.el.classList.add("is-dragging");
+          a.ease = speed === "tiny" ? 0.3 : speed === "fast" ? 0.26 : speed === "major" ? 0.13 : 0.2;
+          a.tx = rect.right; a.ty = rect.bottom;
+          var dragTimeout = speed === "tiny" ? 650 : speed === "fast" ? 900 : speed === "major" ? 1500 : 1050;
+          var okDrag = await waitForAgent(a, rect.right, rect.bottom, dragTimeout, id);
+          a.drag = null;
+          a.el.classList.remove("is-dragging");
+          if (!okDrag) { box.remove(); camDragHolds--; return false; }
+
+          /* --- release: exact final size, handles, flash, click --- */
+          if (elm) {
+            rect = finalRect(elm); /* fresh bounds at the release instant */
+            box.style.left = rect.left + "px";
+            box.style.top = rect.top + "px";
+          }
+          snapAgent(a, rect.right, rect.bottom);
+          box.style.width = rect.width + "px";
+          box.style.height = rect.height + "px";
+          dim.textContent = Math.round(rect.width) + " × " + Math.round(rect.height);
+          box.classList.add("complete");
+          box.classList.add("flash");
+          doClick(a);
+          setTimeout(function () { box.classList.remove("flash"); }, 130);
+          if (!(await wait(speed === "tiny" ? 90 : 150, id))) { box.remove(); camDragHolds--; return false; }
+          a.ease = a.baseEase;
+          camDragHolds--;
+          return box; /* caller places the element, then fades the box */
+        }
+        function fadeBox(box) {
+          if (!box) return;
+          box.classList.add("fade");
+          setTimeout(function () { box.remove(); }, 300);
+        }
+
+        /* ---------- Job factories (each job owns ONE agent) ---------- */
+        function placeJob(elm, size) {
+          return async function (a, id) {
+            var estMs = size === "major" ? 2600 : size === "mid" ? 2100 : size === "fast" ? 1400 : size === "tiny" ? 1200 : 1800;
+            noteFront(elm, estMs); /* register a waypoint: the camera front advances past this element only when this job completes */
+            var rect = finalRect(elm);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, size || "minor", elm);
+            if (!box) { frontDone(elm); return false; }
+            placeElement(elm, false);
+            reportRemain(elm, 240); /* drag done — only the settle beat is left */
+            nudge(elm, elm.classList.contains("enter-left"));
+            fadeBox(box);
+            jobDone(); frontDone(elm);
+            return await wait(size === "major" ? 160 : 90, id);
+          };
+        }
+        /* ---- Realistic typing ----
+           A real fast typist does NOT type at one robotic speed:
+           letters burst quickly inside a word, there is a natural
+           beat at every space, a longer beat after punctuation, and
+           the hand hesitates a touch before a new word group. The
+           typing agent no longer rides the caret like a puppet — it
+           hovers just below the line, supervising, while a proper
+           text caret does the work: solid while glyphs are landing,
+           blinking at a natural ~530ms cadence during the pauses.
+           Glyphs appear crisply, exactly like real typing. On one or
+           two longer strings only, the typist makes a believable
+           slip: wrong letter, brief pause, backspace, retype. */
+        var typoBudget = 2;
+        function humanDelay(chars, i, base) {
+          var ch = chars[i].textContent;
+          var prev = i > 0 ? chars[i - 1].textContent : "";
+          if (ch === " " || ch === " ") return base * rand(2.1, 3.3); /* beat between words */
+          if (prev === " " || prev === " ") return base * rand(0.85, 1.5); /* first letter of a word: slight hesitation */
+          if (/[.,;:!?]/.test(prev)) return base * rand(3.2, 4.6); /* pause after punctuation */
+          if (/[—–-]/.test(prev)) return base * rand(2.4, 3.4);
+          return base * rand(0.5, 1.1); /* fast burst inside a word */
+        }
+        function hoverBeside(a, elm) {
+          var r = elm.getBoundingClientRect();
+          var hx = clamp(r.left + 10, 6, vw() - 40);
+          var hy = r.bottom + 16 <= vh() - 40 ? r.bottom + 16 : Math.max(70, r.top - 34);
+          a.tx = hx; a.ty = clamp(hy, 66, vh() - 42);
+        }
+        function typeCharsIn(a, elm, chars, charDelay, id, opts) {
+          return (async function () {
+            opts = opts || {};
+            var caret = document.createElement("span");
+            caret.className = "build-caret typing";
+            if (chars.length) chars[0].parentNode.insertBefore(caret, chars[0]);
+            hoverBeside(a, elm); /* supervise from below — never ride the caret */
+            a.hoverElm = elm; /* the frame loop keeps the hover glued to the element while the camera drifts */
+            reportRemain(elm, chars.length * charDelay * 1.35 + 340); /* the camera paces itself by this typing from here on */
+            /* Plan at most ONE believable slip, only on longer strings,
+               never on the hero name */
+            var typoAt = -1;
+            if (opts.allowTypo !== false && typoBudget > 0 && chars.length >= 16) {
+              var cand = Math.floor(chars.length * rand(0.38, 0.68));
+              if (/[a-zA-Z]/.test(chars[cand].textContent)) { typoAt = cand; typoBudget--; }
+            }
+            for (var ci = 0; ci < chars.length; ci++) {
+              if (!alive(id)) { caret.remove(); return false; }
+              if (ci === typoAt) {
+                /* slip: wrong letter lands, pause, backspace, retype */
+                var orig = chars[ci].textContent;
+                var pool = "sadfghjklwertyuiopzxcvbnm";
+                var wrong = pool[Math.floor(Math.random() * pool.length)];
+                if (wrong === orig.toLowerCase()) wrong = wrong === "x" ? "z" : "x";
+                chars[ci].textContent = orig === orig.toUpperCase() ? wrong.toUpperCase() : wrong;
+                chars[ci].classList.add("on");
+                chars[ci].parentNode.insertBefore(caret, chars[ci].nextSibling);
+                if (!(await wait(rand(190, 300), id))) { caret.remove(); return false; }
+                chars[ci].classList.remove("on"); /* backspace */
+                if (!(await wait(rand(120, 190), id))) { caret.remove(); return false; }
+                chars[ci].textContent = orig;
+              }
+              chars[ci].classList.add("on"); /* glyph is simply there — crisp, no animation */
+              reportRemain(elm, (chars.length - ci) * charDelay * 1.35 + 340); /* live re-estimate: characters actually left to type */
+              chars[ci].parentNode.insertBefore(caret, chars[ci].nextSibling);
+              var d = humanDelay(chars, ci, charDelay);
+              if (d > charDelay * 1.9) caret.classList.remove("typing"); /* longer pause: caret blinks */
+              else caret.classList.add("typing"); /* landing fast: caret solid */
+              if (!(await wait(d, id))) { caret.remove(); return false; }
+            }
+            caret.classList.remove("typing"); /* finished: a natural blink or two */
+            if (!(await wait(320, id))) { caret.remove(); return false; }
+            caret.remove();
+            return true;
+          })();
+        }
+        function typeJob(elm, charDelay) {
+          return async function (a, id) {
+            var nChars = elm.querySelectorAll(".type-char").length;
+            noteFront(elm, 1500 + nChars * 78 + 340); /* drag + human-rhythm typing estimate */
+            var rect = finalRect(elm);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "mid", elm);
+            if (!box) { frontDone(elm); return false; }
+            placeElement(elm, false);
+            fadeBox(box);
+            var chars = elm.querySelectorAll(".type-char");
+            /* The hero name is NEVER given a typo slip */
+            if (!(await typeCharsIn(a, elm, chars, charDelay, id, { allowTypo: elm !== heroH1 }))) { frontDone(elm); return false; }
+            jobDone(); frontDone(elm);
+            return true;
+          };
+        }
+        /* Swarmline-style heading grow: the heading starts at ~84%
+           size while it is typed, then scales smoothly up into its
+           final size once typing completes (transform only). */
+        function headingShrink(h2) {
+          if (!h2) return;
+          h2.classList.remove("swarm-growing");
+          h2.style.transform = "scale(0.84)";
+        }
+        async function headingGrow(h2, id) {
+          if (!h2) return true;
+          void h2.offsetWidth; /* commit the small size before animating */
+          h2.classList.add("swarm-growing");
+          h2.style.transform = "scale(1)";
+          var ok = await wait(720, id); /* full 0.7s grow transition — no end snap */
+          h2.classList.remove("swarm-growing");
+          h2.style.transform = "";
+          return ok;
+        }
+        /* Section heading: typed h2 + paragraph fades in alongside.
+           HEADING LOCK: from this job's start until its typing
+           COMPLETES, the camera front is pinned to this heading —
+           deeper jobs in the batch build in parallel behind it but
+           cannot advance the front past it (see camTick). */
+        function headJob(headElm) {
+          return async function (a, id) {
+            var h2 = headElm.querySelector("h2");
+            var chars = h2 ? h2.querySelectorAll(".type-char") : [];
+            noteFront(headElm, 1500 + chars.length * 54 + 1320); /* drag + typing + grow (0.7s) + paragraph fade */
+            headLockElm = headElm; /* LOCK: camera front = this heading until frontDone below */
+            var rect = finalRect(headElm);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "mid", headElm);
+            if (!box) { frontDone(headElm); return false; }
+            headingShrink(h2); /* typed small… */
+            placeElement(headElm, false);
+            fadeBox(box);
+            if (!(await typeCharsIn(a, headElm, chars, 42, id))) { frontDone(headElm); return false; }
+            reportRemain(headElm, 1060); /* typing done — grow + paragraph fade is all that remains */
+            if (!(await headingGrow(h2, id))) { frontDone(headElm); return false; } /* …then grows into size */
+            var p = headElm.querySelector("p");
+            if (p) { p.style.opacity = "1"; await wait(220, id); }
+            jobDone(); frontDone(headElm); /* typing complete — lock released, front may advance in document order */
+            return true;
+          };
+        }
+        function letterJob(letterEl) {
+          return async function (a, id) {
+            var r = letterEl.getBoundingClientRect();
+            var rect = { left: r.left, top: r.top - 18, right: r.right, bottom: r.bottom - 18, width: letterEl.offsetWidth || r.width, height: letterEl.offsetHeight || r.height };
+            var box = await snipDrag(a, rect, id, "minor", letterEl);
+            if (!box) return false;
+            letterEl.classList.add("placed");
+            fadeBox(box);
+            jobDone();
+            return true;
+          };
+        }
+        function roleJob() {
+          return async function (a, id) {
+            noteFront(roleEl, 1500 + ROLE_TEXT.length * 56 + 200);
+            var rect = finalRect(roleEl);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "minor", roleEl);
+            if (!box) return false;
+            placeElement(roleEl, false);
+            fadeBox(box);
+            /* Same human rhythm as the headings: the agent hovers
+               below the line supervising; the role's own caret stays
+               solid while letters land and blinks in the pauses.
+               ONLY ONE quick cycle is typed here — the full rotation
+               (delete → next role → back) is a living-page feature run
+               by the page's own rotator once the intro ends. Playing
+               the whole rotation inside this job was the long dead
+               pause after the hero: the sequence waited on it while
+               nothing else was being built. */
+            hoverBeside(a, roleEl);
+            a.hoverElm = roleEl;
+            if (roleCaret) roleCaret.classList.add("typing");
+            async function typeRoleText(text) {
+              var fakeChars = text.split("").map(function (c) { return { textContent: c }; });
+              for (var ti = 0; ti <= text.length; ti++) {
+                if (!alive(id)) return false;
+                if (typedEl) typedEl.textContent = text.slice(0, ti);
+                reportRemain(roleEl, (text.length - ti) * 62 + 120);
+                if (ti < text.length) {
+                  var rd = humanDelay(fakeChars, ti, 46);
+                  if (roleCaret) roleCaret.classList.toggle("typing", rd <= 46 * 1.9);
+                  if (!(await wait(rd, id))) return false;
+                }
+              }
+              return true;
+            }
+            async function deleteRoleText(text) {
+              if (roleCaret) roleCaret.classList.remove("typing");
+              if (!(await wait(rand(620, 820), id))) return false;
+              if (roleCaret) roleCaret.classList.add("typing");
+              for (var di = text.length; di >= 0; di--) {
+                if (!alive(id)) return false;
+                if (typedEl) typedEl.textContent = text.slice(0, di);
+                if (di > 0) {
+                  if (!(await wait(rand(26, 52), id))) return false;
+                }
+              }
+              if (!(await wait(rand(240, 380), id))) return false;
+              return true;
+            }
+            var roleOk = await typeRoleText(ROLE_TEXT);
+            if (!roleOk) { if (roleCaret) roleCaret.classList.remove("typing"); frontDone(roleEl); return false; }
+            if (roleCaret) roleCaret.classList.remove("typing");
+            jobDone(); frontDone(roleEl);
+            return true;
+          };
+        }
+        function sweepJob(elm) {
+          return async function (a, id) {
+            noteFront(elm, 1900);
+            var rect = finalRect(elm);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "minor", elm);
+            if (!box) { frontDone(elm); return false; }
+            placeElement(elm, false);
+            fadeBox(box);
+            for (var sw = 0; sw <= 3; sw++) {
+              a.tx = rect.left + (rect.width * sw / 3);
+              a.ty = rect.top + rect.height * 0.4;
+              if (!(await wait(90, id))) return false;
+            }
+            jobDone(); frontDone(elm);
+            return true;
+          };
+        }
+        function countJob() {
+          return async function (a, id) {
+            noteFront(statsEl, 2900);
+            var rect = finalRect(statsEl);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "major", statsEl);
+            if (!box) { frontDone(statsEl); return false; }
+            placeElement(statsEl, false);
+            fadeBox(box);
+            var start = vClockMs, dur = 850 * SCALE;
+            var done = await new Promise(function (res) {
+              var iv = setInterval(function () {
+                if (!alive(id)) { clearInterval(iv); res(false); return; }
+                var p = Math.min(1, (vClockMs - start) / dur);
+                var e = 1 - Math.pow(1 - p, 3);
+                statNums.forEach(function (s) { s.el.textContent = Math.round(s.val * e) + s.suffix; });
+                reportRemain(statsEl, (1 - p) * 850 + 60);
+                if (p >= 1) { clearInterval(iv); res(true); }
+              }, 40);
+            });
+            if (!done) { frontDone(statsEl); return false; }
+            jobDone(); frontDone(statsEl);
+            return true;
+          };
+        }
+        function lineJob() {
+          return async function (a, id) {
+            /* Short front estimate on purpose: the camera moves on
+               to the first timeline entries while the line keeps
+               drawing — the entries are the Journey elements that
+               must be seen building, in the middle band */
+            noteFront(timelineEl, 2300);
+            var rect = finalRect(timelineEl);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "major", timelineEl);
+            if (!box) { frontDone(timelineEl); return false; }
+            timelineEl.style.setProperty("--tl", "0");
+            placeElement(timelineEl, false);
+            fadeBox(box);
+            /* The draw ticks every 40ms — cache the element's
+               DOCUMENT position once and derive the viewport
+               position from the current scrollY, instead of a
+               getBoundingClientRect (forced layout) on every tick */
+            var r2 = finalRect(timelineEl);
+            var docLeft = r2.left, docTop = r2.top + (window.scrollY || 0), docH = r2.height;
+            var start = vClockMs, dur = 1300 * SCALE;
+            var done = await new Promise(function (res) {
+              var iv = setInterval(function () {
+                if (!alive(id)) { clearInterval(iv); res(false); return; }
+                var p = Math.min(1, (vClockMs - start) / dur);
+                timelineEl.style.setProperty("--tl", String(p));
+                reportRemain(timelineEl, (1 - p) * 1300 + 80);
+                a.tx = docLeft + 4;
+                a.ty = docTop - (window.scrollY || 0) + 8 + p * (docH - 16);
+                if (p >= 1) { clearInterval(iv); res(true); }
+              }, 40);
+            });
+            if (!done) { frontDone(timelineEl); return false; }
+            jobDone(); frontDone(timelineEl);
+            return true;
+          };
+        }
+
+        /* Detail pass: precise snip-drag measurement of an element that
+           is already placed (nav links, footer links) — real parallel
+           work that keeps more of the team building at once */
+        function detailJob(elm) {
+          return async function (a, id) {
+            noteFront(elm, 1100);
+            var r = elm.getBoundingClientRect();
+            var rect = { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: elm.offsetWidth || r.width, height: elm.offsetHeight || r.height };
+            var box = await snipDrag(a, rect, id, "tiny", null, !!(elm.closest && elm.closest(".site-head")));
+            if (!box) { frontDone(elm); return false; }
+            fadeBox(box);
+            jobDone(); frontDone(elm);
+            return true;
+          };
+        }
+        /* ---------- Copy-duplicate phase (Skills) ----------
+           The first skill box is built fully by one agent (snip-drag +
+           typed name). Every remaining box is a DUPLICATE: an agent
+           flies to the finished box, clicks it (selection outline),
+           a "Ctrl+C" cue pops, then it flies to the empty grid slot,
+           "Ctrl+V" pops, and the copy lands in place — still carrying
+           the source's name, which is highlighted, then re-typed to
+           the real skill name. Same logic for the small pills. */
+        function showKeyCue(a, text) {
+          var cue = document.createElement("div");
+          cue.className = "key-cue";
+          cue.textContent = text;
+          cue.style.left = (a.x + 16) + "px";
+          cue.style.top = (a.y + 22) + "px";
+          container.appendChild(cue);
+          setTimeout(function () { cue.classList.add("fade"); }, 430);
+          setTimeout(function () { cue.remove(); }, 800);
+        }
+        function typeNameText(nameEl, text, id, base, wpElm) {
+          return (async function () {
+            nameEl.textContent = "";
+            var fake = text.split("").map(function (c) { return { textContent: c }; });
+            for (var ti = 1; ti <= text.length; ti++) {
+              if (!alive(id)) return false;
+              nameEl.textContent = text.slice(0, ti);
+              reportRemain(wpElm, (text.length - ti) * (base || 46) * 1.35 + 120);
+              if (ti < text.length) {
+                if (!(await wait(humanDelay(fake, ti - 1, base || 46), id))) return false;
+              }
+            }
+            return true;
+          })();
+        }
+        function firstSkillJob(card) {
+          return async function (a, id) {
+            var nameEl = card.querySelector("h3");
+            var realName = nameEl ? nameEl.textContent : "";
+            noteFront(card, 1600 + realName.length * 62); /* drag + typed name */
+            var rect = finalRect(card);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "mid", card);
+            if (!box) { frontDone(card); return false; }
+            if (nameEl) nameEl.textContent = "";
+            placeElement(card, false);
+            fadeBox(box);
+            if (nameEl) {
+              hoverBeside(a, card);
+              a.hoverElm = card;
+              if (!(await typeNameText(nameEl, realName, id, 52, card))) { frontDone(card); return false; }
+            }
+            jobDone(); frontDone(card);
+            return true;
+          };
+        }
+        function copySkillJob(sourceCard, card) {
+          return async function (a, id) {
+            var nameEl = card.querySelector("h3");
+            var realName = nameEl ? nameEl.textContent : "";
+            noteFront(card, 2500 + realName.length * 62); /* the front is the slot being filled, not the source */
+            var srcNameEl = sourceCard.querySelector("h3");
+            var srcName = srcNameEl ? srcNameEl.textContent : realName;
+            /* 1 — select the finished source box and copy it */
+            var sRect = finalRect(sourceCard);
+            a.ease = 0.16;
+            a.tx = sRect.left + sRect.width * 0.5; a.ty = sRect.top + 24;
+            if (!(await waitForAgent(a, a.tx, a.ty, 700, id))) return false;
+            sRect = finalRect(sourceCard); /* camera drifted during the flight — snap onto the live position */
+            snapAgent(a, sRect.left + sRect.width * 0.5, sRect.top + 24);
+            doClick(a);
+            sourceCard.classList.add("swarm-selected");
+            showKeyCue(a, "Ctrl+C");
+            if (!(await wait(430, id))) { sourceCard.classList.remove("swarm-selected"); return false; }
+            sourceCard.classList.remove("swarm-selected");
+            /* 2 — fly to this box's own slot and paste */
+            var rect = finalRect(card);
+            ringSupport(rect, [a]);
+            a.tx = rect.left; a.ty = rect.top;
+            if (!(await waitForAgent(a, rect.left, rect.top, 800, id))) return false;
+            rect = finalRect(card); /* re-measure after the flight */
+            snapAgent(a, rect.left, rect.top);
+            showKeyCue(a, "Ctrl+V");
+            doClick(a);
+            if (nameEl) nameEl.textContent = srcName; /* the paste still carries the source name */
+            placeElement(card, false);
+            nudge(card, false);
+            if (!(await wait(300, id))) return false;
+            /* 3 — highlight the pasted name, then re-type the real one */
+            if (nameEl && srcName !== realName) {
+              nameEl.classList.add("name-highlight");
+              if (!(await wait(380, id))) { nameEl.classList.remove("name-highlight"); return false; }
+              nameEl.classList.remove("name-highlight");
+              hoverBeside(a, card);
+              a.hoverElm = card;
+              if (!(await typeNameText(nameEl, realName, id, 52, card))) { frontDone(card); return false; }
+            }
+            jobDone(); frontDone(card);
+            return true;
+          };
+        }
+        function copyPillJob(sourcePill, pill) {
+          return async function (a, id) {
+            var realName = pill.textContent;
+            noteFront(pill, 1900 + realName.length * 50);
+            var srcName = sourcePill.textContent;
+            var sRect = finalRect(sourcePill);
+            a.ease = 0.16;
+            a.tx = sRect.left + sRect.width * 0.5; a.ty = sRect.top + 6;
+            if (!(await waitForAgent(a, a.tx, a.ty, 650, id))) return false;
+            sRect = finalRect(sourcePill); /* snap onto the live position */
+            snapAgent(a, sRect.left + sRect.width * 0.5, sRect.top + 6);
+            doClick(a);
+            sourcePill.classList.add("swarm-selected");
+            showKeyCue(a, "Ctrl+C");
+            if (!(await wait(360, id))) { sourcePill.classList.remove("swarm-selected"); return false; }
+            sourcePill.classList.remove("swarm-selected");
+            var rect = finalRect(pill);
+            a.tx = rect.left; a.ty = rect.top;
+            if (!(await waitForAgent(a, rect.left, rect.top, 750, id))) return false;
+            rect = finalRect(pill); /* re-measure after the flight */
+            snapAgent(a, rect.left, rect.top);
+            showKeyCue(a, "Ctrl+V");
+            doClick(a);
+            pill.textContent = srcName;
+            placeElement(pill, false);
+            if (!(await wait(240, id))) return false;
+            if (srcName !== realName) {
+              pill.classList.add("name-highlight");
+              if (!(await wait(320, id))) { pill.classList.remove("name-highlight"); return false; }
+              pill.classList.remove("name-highlight");
+              if (!(await typeNameText(pill, realName, id, 44, pill))) { frontDone(pill); return false; }
+            }
+            jobDone(); frontDone(pill);
+            return true;
+          };
+        }
+        function contactJob() {
+          return async function (a, id) {
+            var ch2 = contactWrap.querySelector("h2");
+            var chars = ch2 ? ch2.querySelectorAll(".type-char") : [];
+            noteFront(contactWrap, 2000 + chars.length * 54 + 1450); /* drag + typed heading + grow (0.7s) + socials */
+            var rect = finalRect(contactWrap);
+            ringSupport(rect, [a]);
+            var box = await snipDrag(a, rect, id, "major", contactWrap);
+            if (!box) { frontDone(contactWrap); return false; }
+            headingShrink(ch2);
+            placeElement(contactWrap, false);
+            fadeBox(box);
+            if (!(await typeCharsIn(a, contactWrap, chars, 42, id))) { frontDone(contactWrap); return false; }
+            reportRemain(contactWrap, 720 + 200 + contactSocials.length * 120 + 120); /* typing done — grow + socials remain */
+            if (!(await headingGrow(ch2, id))) { frontDone(contactWrap); return false; }
+            if (contactP) { contactP.style.opacity = "1"; await wait(200, id); }
+            for (var si = 0; si < contactSocials.length; si++) {
+              contactSocials[si].style.opacity = "1";
+              if (!(await wait(120, id))) return false;
+            }
+            jobDone(); frontDone(contactWrap);
+            return true;
+          };
+        }
+
+        /* ---------- Shared job queue ----------
+           ONE queue feeds the whole team. Phases (see runSequence)
+           push their jobs in as their scroll triggers fire — several
+           phases can be in flight at once — and every free agent
+           immediately picks up the next queued job, so the team is
+           never double-booked and never idle while work waits. A
+           batch's promise resolves when all of its jobs are done,
+           which is what phase dependencies chain on. */
+        var jobQueue = [];
+        var pumpTimer = null;
+        function pumpQueue() {
+          /* START PACING: a batch's jobs start with a small stagger
+             (see runBatch), so a section's jobs — heading first —
+             begin in sequence instead of all at once. If the head
+             job's start moment hasn't arrived, re-pump when it has.
+             This never blocks a job on the CAMERA; it only spaces
+             starts by ~70ms steps while earlier jobs are visibly
+             running in view. */
+          var head = jobQueue[0];
+          if (head && head.notBefore && Date.now() < head.notBefore) {
+            if (!pumpTimer) {
+              pumpTimer = setTimeout(function () { pumpTimer = null; pumpQueue(); }, head.notBefore - Date.now() + 5);
+            }
+            return;
+          }
+          for (var i = 0; i < agents.length; i++) {
+            var a = agents[i];
+            if (a.busy) continue;
+            var item = jobQueue.shift();
+            if (!item) return;
+            if (item.id !== runId) { item.done(); i--; continue; } /* stale run: drop it, keep looking */
+            a.busy = true;
+            activeJobs++; refreshStatus();
+            (async function (ag, it) {
+              /* Per-job safety net: a single job may never hold the
+                 build hostage — past 16s it is abandoned and the
+                 agent moves on (the watchdog + completeAll still
+                 guarantee a finished page). The scroll is never
+                 involved: it keeps drifting regardless. */
+              try { await Promise.race([it.fn(ag, it.id), wait(16000, it.id)]); } catch (e) {}
+              activeJobs--; refreshStatus();
+              ag.busy = false;
+              ag.hoverElm = null;
+              it.done();
+              pumpQueue();
+            })(a, item);
+          }
+        }
+        var fireEpoch = 0;
+        function runBatch(jobs, id, priority) {
+          return new Promise(function (res) {
+            if (!jobs.length) { res(true); return; }
+            var remaining = jobs.length;
+            /* Start stagger is tighter in manual mode (30ms): the
+               visible section's first job must start with the first
+               scroll movement that reveals it */
+            var stagger = manualMode ? 30 : 70;
+            var items = jobs.map(function (fn, ji) {
+              return { fn: fn, id: id, epoch: fireEpoch, notBefore: Date.now() + ji * stagger, done: function () { if (--remaining === 0) res(true); } };
+            });
+            if (priority) {
+              /* VISIBLE-FIRST PRIORITY: a batch fired by the section
+                 the user is looking at NOW jumps ahead of jobs still
+                 queued from earlier sections — banked scroll energy
+                 is spent on what is in front of the user's eyes
+                 first, not on leftovers above the fold. Batches
+                 fired in the SAME pass keep their relative order
+                 (epoch match), so a jump to the bottom still
+                 completes everything in document order. Filler
+                 detail passes (priority=false) always append. */
+              var ins = 0;
+              while (ins < jobQueue.length && jobQueue[ins].epoch === fireEpoch) ins++;
+              jobQueue.splice.apply(jobQueue, [ins, 0].concat(items));
+            } else {
+              items.forEach(function (it) { jobQueue.push(it); });
+            }
+            pumpQueue();
+          });
+        }
+        function clearQueue() {
+          jobQueue.forEach(function (it) { it.done(); });
+          jobQueue.length = 0;
+        }
+
+        function q(sel) { return document.querySelector(sel); }
+        function qa(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+        /* ---------- The build: scroll-triggered phases ----------
+           The build is a list of PHASES. A phase fires when BOTH
+           (a) its dependency phase (if any) has finished, and
+           (b) its trigger element's top has crossed ~85% of the
+           viewport height — the pursuit camera, drawn by the build
+           front and the pending trigger, has brought it into the
+           lower screen. Firing only ENQUEUES the phase's jobs onto
+           the shared queue (with the small start stagger); phases
+           overlap freely, and because the camera follows the front,
+           elements are built in the visible band — starting as they
+           enter the lower screen and finishing around the middle.
+           No phase ever waits on the camera beyond the trigger
+           crossing, and the camera never waits for any phase — the
+           two flows run side by side, start to finish. */
+        function runSequence(id) {
+          document.body.classList.add("intro-building");
+          /* Count every job up front so layers map to real progress */
+          totalJobs = giantLetters.length + 13 /* hero: badge + "I am" script line + headline + role + intro + stats + hint + 6 nav precision passes */
+            + 1 + 2 + 4 /* about */ + 1 + 1 + 5 /* journey */
+            + 1 + 6 + 12 /* skills */ + 1 + 1 /* projects */ + 1 + 1 /* contact+footer */
+            + 6 + 6 /* nav + footer detail passes */;
+          doneJobs = 0;
+          lastProgressAt = Date.now();
+          forceScrollTop();
+          /* Arm the build-synced camera: it stays locked at the top
+             for phase 1, then pursues the build front (below) */
+          resetCam();
+          heroBuilt = false; /* phase 1 begins: full first page, static camera */
+          camOn = true;
+
+          var tItems = qa("#journey .t-item");
+          var skillCards = qa("#skills .skill");
+          var skillTags = qa("#skills .tag");
+
+          var phases = [
+            /* 0 — BADGE: the header and the hero call-to-action
+               buttons are PERSISTENT CHROME — always visible and
+               operable, even at the gate (a visitor must be able to
+               reach the Motion toggle and the CTAs without starting
+               the build; the nav links still get precision detail
+               passes in phase 1). Only the badge is placed here. */
+            { el: null, dep: -1, status: "placing intro line…", make: function () {
+                return [placeJob(q(".hero .badge"), "fast")];
+              } },
+            /* 1 — HERO: PORTFOLIO letters (one agent per letter),
+               typed headline, typed role, intro, counted stats,
+               scroll hint, plus precision detail passes on
+               every nav link — most of the team building at once */
+            { el: null, dep: -1, status: "designing hero — full team on it…", make: function () {
+                placeElement(giantEl, true);
+                var w = giantLetters.map(function (l) { return letterJob(l); });
+                w.push(typeJob(iamEl, 130)); /* the cursive "I am" is hand-written in just before the name */
+                w.push(typeJob(heroH1, 60));
+                w.push(roleJob());
+                w.push(sweepJob(q(".hero .intro")));
+                w.push(countJob());
+                w.push(placeJob(q(".hero .scroll-hint"), "minor"));
+                qa(".main-nav a").forEach(function (l) { w.push(detailJob(l)); });
+                return w;
+              } },
+            /* 2 — ABOUT: heading typed while the cards land */
+            { el: q("#about .rule-head"), dep: -1, status: "building About…", make: function () {
+                var w = [headJob(q("#about .rule-head"))];
+                qa("#about .about-grid .card").forEach(function (c) { w.push(placeJob(c, "major")); });
+                return w;
+              } },
+            /* 3 — ABOUT process steps */
+            { el: q("#about .p-step"), dep: -1, status: "laying out process…", make: function () {
+                return qa("#about .p-step").map(function (c) { return placeJob(c, "minor"); });
+              } },
+            /* 4 — JOURNEY: the line draws while the first entries land */
+            { el: q("#journey .rule-head"), dep: -1, status: "drawing Journey…", make: function () {
+                var w = [headJob(q("#journey .rule-head")), lineJob()];
+                tItems.slice(0, 2).forEach(function (c) { w.push(placeJob(c, "mid")); });
+                return w;
+              } },
+            /* 5 — JOURNEY entries 3–4 */
+            { el: tItems[2] || null, dep: -1, make: function () {
+                return tItems.slice(2, 4).map(function (c) { return placeJob(c, "mid"); });
+              } },
+            /* 6 — JOURNEY last entry */
+            { el: tItems[4] || null, dep: -1, make: function () {
+                return tItems.slice(4).map(function (c) { return placeJob(c, "mid"); });
+              } },
+
+            /* 7 — SKILLS: heading typed while ONE agent builds the
+               first skill box fully (snip-drag + typed name) */
+            { el: q("#skills .rule-head"), dep: -1, status: "styling Skills…", make: function () {
+                return [headJob(q("#skills .rule-head")), firstSkillJob(skillCards[0])];
+              } },
+            /* 8 — SKILLS boxes 2–3 duplicated from the first */
+            { el: skillCards[2] || null, dep: 7, status: "duplicating skill boxes — Ctrl+C / Ctrl+V…", make: function () {
+                return [copySkillJob(skillCards[0], skillCards[1]), copySkillJob(skillCards[0], skillCards[2])];
+              } },
+            /* 9 — SKILLS boxes 4–6 duplicated. Dep is phase 7, NOT 8:
+               every copy job's source is the FIRST box, so boxes 4–6
+               never needed to wait for boxes 2–3 — that chain was a
+               core reason the build trailed behind the scroll */
+            { el: skillCards[4] || null, dep: 7, make: function () {
+                return [copySkillJob(skillCards[0], skillCards[3]), copySkillJob(skillCards[0], skillCards[4]), copySkillJob(skillCards[0], skillCards[5])];
+              } },
+            /* 10 — the first skill pill is placed for real */
+            { el: skillTags[0] || null, dep: 9, status: "duplicating skill tags…", make: function () {
+                return [placeJob(skillTags[0], "tiny")];
+              } },
+            /* 11 — pills 2–5 duplicated from the first */
+            { el: skillTags[0] || null, dep: 10, make: function () {
+                return skillTags.slice(1, 5).map(function (tg) { return copyPillJob(skillTags[0], tg); });
+              } },
+            /* 12 — the remaining pills duplicated. Dep is phase 10,
+               NOT 11: the copy source is the first pill, so these
+               start alongside pills 2–5 instead of after them */
+            { el: skillTags[8] || null, dep: 10, make: function () {
+                return skillTags.slice(5).map(function (tg) { return copyPillJob(skillTags[0], tg); });
+              } },
+            /* 13 — PROJECTS */
+            { el: q("#projects .rule-head"), dep: -1, status: "placing Projects…", make: function () {
+                return [headJob(q("#projects .rule-head")), placeJob(q("#projects .soon"), "major")];
+              } },
+            /* 14 — CONTACT */
+            { el: contactWrap, dep: -1, status: "finishing Contact…", make: function () {
+                return [contactJob()];
+              } },
+            /* 15 — FOOTER */
+            { el: q("footer"), dep: -1, status: "adding footer…", make: function () {
+                return [placeJob(q("footer"), "major")];
+              } },
+            /* 16 — footer links get their own precision detail passes */
+            { el: null, dep: 15, make: function () {
+                return qa(".foot-links a").map(function (l) { return detailJob(l); });
+              } }
+          ];
+          var state = phases.map(function () { return { fired: false, done: false }; });
+          function tryFire() {
+            fireEpoch++; /* each pass is a new epoch: batches fired in this pass keep their order, and outrank stale queued jobs from earlier passes (see runBatch) */
+            /* The next section whose turn has come (deps satisfied,
+               not yet fired) lends its trigger position to the camera
+               as pendingDocY, so the camera is already arriving at the
+               entry line as that section's first jobs fire. */
+            pendingDocY = 0;
+            for (var pi = 0; pi < phases.length; pi++) {
+              if (state[pi].fired) continue;
+              if (phases[pi].dep >= 0 && !state[phases[pi].dep].done) continue;
+              if (phases[pi].el) {
+                pendingDocY = phases[pi].el.getBoundingClientRect().top + (window.scrollY || 0);
+                break;
+              }
+            }
+            phases.forEach(function (ph, i) {
+              if (state[i].fired) return;
+              if (ph.dep >= 0 && !state[ph.dep].done) return;
+              /* Trigger: the element's top has crossed ~98% of the
+                 viewport height — it fires the moment the element
+                 first peeks into the bottom of the screen, so its
+                 first job starts with the first scroll movement that
+                 reveals it, not after it is already well in view.
+                 Once crossed it stays crossed, so a phase whose
+                 dependency finishes late still fires immediately. At
+                 maximum scroll every remaining trigger counts as
+                 crossed — the last sections can never be stranded
+                 by a short final viewport. */
+              if (ph.el && ph.el.getBoundingClientRect().top >= vh() * 0.98 &&
+                  (window.scrollY || 0) < Math.max(0, document.documentElement.scrollHeight - vh()) - 2) return;
+              state[i].fired = true;
+              if (ph.status) setStatus(ph.status);
+              runBatch(ph.make(), id, i !== 16).then(function () {
+                state[i].done = true;
+                /* PHASE 1 → 2: the badge (phase 0) and the whole hero
+                   (phase 1) are complete — only NOW may the camera
+                   start pursuing the build front. The About trigger
+                   lends its position via pendingDocY, so the camera
+                   is already arriving as About starts: no dead gap
+                   after the hero. */
+                if (state[0].done && state[1].done && !heroBuilt) {
+                  heroBuilt = true;
+                  /* PHASE 2 BEGINS — MANUAL SCROLL-DRIVEN MODE.
+                     The auto camera is switched OFF for good: from
+                     here the page never scrolls itself. The user's
+                     downward scroll banks build energy (see the
+                     engine note at the camera constants), jobs scrub
+                     forward only while that energy lasts, and
+                     everything freezes in place when it runs out.
+                     The status bar swaps its auto-tour text for the
+                     scroll hint, and the blank-page failsafe gets a
+                     long leash — waiting to scroll is legitimate
+                     now, not a stall. */
+                  manualMode = true;
+                  camOn = false; camVel = 0;
+                  buildEnergy = 0;
+                  lastManualScrollY = window.scrollY || 0;
+                  lastScrollActivityAt = Date.now();
+                  root.classList.add("manual-scroll");
+                  setStatus("Scroll karo — design tumhare scroll ke saath banega ↓");
+                  reArmFailsafe(600000);
+                }
+              });
+            });
+          }
+          var fireIv = setInterval(function () {
+            if (!alive(id)) { clearInterval(fireIv); return; }
+            tryFire();
+            if (state.every(function (s) { return s.done; })) {
+              clearInterval(fireIv);
+              /* Build complete: manual mode ends — the celebration
+                 (and its glide back to the top) runs on real time */
+              manualMode = false;
+              root.classList.remove("manual-scroll");
+              celebrate(id);
+            }
+          }, 100); /* 100ms polling: a section entering the band starts within a frame or two of its first scroll movement — no perceptible entry lag */
+          tryFire();
+        }
+
+        /* ---- Celebration, then the normal page ---- */
+        async function celebrate(id) {
+          if (!alive(id)) return;
+          targetLayers = TOTAL_LAYERS;
+          setStatus("portfolio live ✓");
+          activeJobs = 0; refreshStatus();
+          /* camera off — the one allowed long glide: back to the top */
+          camOn = false; camVel = 0;
+          if (!(await easeScrollTo(0, 1400, id))) return;
+          if (!(await wait(250, id))) return;
+          var hr = heroH1 ? heroH1.getBoundingClientRect() : { left: vw() / 2 - 150, top: vh() * 0.3, width: 300, height: 120 };
+          var cx = hr.left + hr.width / 2, cy = hr.top + hr.height / 2;
+          agents.forEach(function (a, idx) {
+            var ang = (idx / agents.length) * Math.PI * 2;
+            var rad = 60 + (idx % 5) * 26;
+            a.tx = clamp(cx + Math.cos(ang) * rad - 6, 6, vw() - 34);
+            a.ty = clamp(cy + Math.sin(ang) * (rad * 0.62) - 6, 66, vh() - 44);
+          });
+          for (var ck = 0; ck < 6; ck++) doClick(agents[ck]);
+          if (!(await wait(1500, id))) return;
+          /* Swarmline-like settle: the crew drifts down and gathers
+             along the bottom status bar, then disperses as the
+             overlay fades — no abrupt vanish */
+          agents.forEach(function (a, idx) {
+            a.tx = clamp(vw() / 2 + (idx - (agents.length - 1) / 2) * 30 - 6, 6, vw() - 34);
+            a.ty = vh() - 64;
+          });
+          if (!(await wait(950, id))) return;
+          agents.forEach(function (a, idx) {
+            a.tx = clamp(a.tx + (idx % 2 ? 46 : -46), 6, vw() - 34);
+            a.ty = vh() - 44;
+          });
+          if (!(await wait(420, id))) return;
+          finishIntro(false);
+        }
+
+        /* ---------- Reset / finish ---------- */
+        function resetState() {
+          buildables.forEach(function (elm) { elm.classList.remove("built", "just-built"); });
+          document.querySelectorAll(".rule-head h2, .contact h2").forEach(function (h) { h.classList.remove("swarm-growing"); h.style.transform = ""; });
+          document.querySelectorAll(".type-char").forEach(function (c) { c.classList.remove("on"); });
+          giantLetters.forEach(function (l) { l.classList.remove("placed"); });
+          statNums.forEach(function (s) { s.el.textContent = "0" + s.suffix; });
+          if (timelineEl) timelineEl.style.setProperty("--tl", "0");
+          headParas.forEach(function (p) { p.style.transition = "opacity 0.5s ease"; p.style.opacity = "0"; });
+          if (contactP) { contactP.style.transition = "opacity 0.5s ease"; contactP.style.opacity = "0"; }
+          contactSocials.forEach(function (s) { s.style.transition = "opacity 0.45s ease"; s.style.opacity = "0"; });
+          if (typedEl) typedEl.textContent = "";
+          typoBudget = 2; /* the 1–2 typing slips are available again on a replay */
+          targetLayers = 0; shownLayers = 0; setLayersUI();
+          activeJobs = 0; doneJobs = 0;
+          camDragHolds = 0;
+          manualMode = false; buildEnergy = 0; vClockMs = 0; lastManualScrollY = 0;
+          root.classList.remove("manual-scroll");
+          resetCam();
+          container.querySelectorAll(".snip-box").forEach(function (b) { b.remove(); });
+          agents.forEach(function (a, idx) {
+            a.drag = null; a.busy = false; a.hoverElm = null; a.ease = a.baseEase; a.vx = 0; a.vy = 0;
+            a.el.classList.remove("is-dragging");
+            var e2 = idx % 4;
+            a.x = a.tx = e2 === 0 ? -50 : e2 === 1 ? vw() + 50 : rand(0, vw());
+            a.y = a.ty = e2 === 2 ? -50 : e2 === 3 ? vh() + 50 : rand(0, vh());
+          });
+        }
+        function completeAll() {
+          buildables.forEach(function (elm) { placeElement(elm, true); elm.classList.remove("just-built"); });
+          document.querySelectorAll(".rule-head h2, .contact h2").forEach(function (h) { h.classList.remove("swarm-growing"); h.style.transform = ""; });
+          document.querySelectorAll(".type-char").forEach(function (c) { c.classList.add("on"); });
+          document.querySelectorAll(".build-caret").forEach(function (c) { c.remove(); });
+          giantLetters.forEach(function (l) { l.classList.add("placed"); });
+          statNums.forEach(function (s) { s.el.textContent = s.val + s.suffix; });
+          if (timelineEl) timelineEl.style.setProperty("--tl", "1");
+          headParas.forEach(function (p) { p.style.opacity = ""; });
+          if (contactP) contactP.style.opacity = "";
+          contactSocials.forEach(function (s) { s.style.opacity = ""; });
+          if (typedEl && !typedEl.textContent) typedEl.textContent = ROLE_TEXT;
+          container.querySelectorAll(".snip-box").forEach(function (b) { b.remove(); });
+          agents.forEach(function (a) { a.drag = null; a.hoverElm = null; a.el.classList.remove("is-dragging"); });
+        }
+        function fadeOutOverlay(ms) {
+          container.style.transition = "opacity " + ms + "ms ease";
+          container.style.opacity = "0";
+          if (bar) { bar.style.transition = "opacity " + ms + "ms ease"; bar.style.opacity = "0"; }
+          if (fadeTimeout) clearTimeout(fadeTimeout);
+          fadeTimeout = setTimeout(function () {
+            container.style.display = "none";
+            if (bar) bar.style.display = "none";
+          }, ms + 40);
+        }
+        /* ---------- TOP-START guarantee ----------
+           The build ALWAYS starts at scrollY = 0 with the hero in
+           view. Three defences: (1) history.scrollRestoration is set
+           to "manual" in the head script and the page is pinned to
+           the top on load, so a reload never restores a bottom
+           position; (2) html.intro-on kills CSS smooth scrolling, so
+           this reset is INSTANT — before, behavior:"auto" inherited
+           `scroll-behavior: smooth` and the "jump" to the top was a
+           slow glide while the hero was already building unseen,
+           which is exactly why the build looked like it started
+           from the bottom; (3) every entry point (gate, gate start,
+           replay, runSequence) calls this before the first job. */
+        function forceScrollTop() {
+          try { window.scrollTo({ top: 0, left: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); }
+          document.documentElement.scrollTop = 0;
+          if (document.body) document.body.scrollTop = 0;
+          lastCamY = 0;
+        }
+
+        /* ---------- Gate: the team assembles and waits ----------
+           On load the build does NOT auto-start. The agents gather
+           into their organic swirl around the centre of the blank
+           canvas (frame loop drives it) with the ready hint below.
+           A click / Enter / Space breaks the formation and starts
+           the normal build. Skip jumps straight to the finished
+           page; Replay is its own click and starts immediately. */
+        function reArmFailsafe(ms) {
+          if (window.__introFailsafe) clearTimeout(window.__introFailsafe);
+          window.__introFailsafe = setTimeout(function () {
+            if (root.classList.contains("intro-on")) finishIntro(true);
+          }, ms);
+        }
+        function removeGateHint() {
+          if (gateHint) { gateHint.remove(); gateHint = null; }
+        }
+        function enterGate() {
+          forceScrollTop(); /* the gate is ALWAYS met at the top of the page */
+          gateActive = true;
+          introStartedAt = Date.now();
+          removeGateHint();
+          gateHint = document.createElement("div");
+          gateHint.id = "gate-hint";
+          gateHint.innerHTML = '<div class="gh-main"><i></i>Agents ready — click anywhere to start building</div>' +
+            '<div class="gh-sub">' + COUNT + ' agents assembled · click / tap, or press Enter / Space</div>';
+          container.appendChild(gateHint);
+          setStatus("agents ready — click to start");
+          /* Waiting for a human click is intentional, not a stall:
+             give the gate a long leash, the build a shorter one. */
+          reArmFailsafe(600000);
+        }
+        function startBuildFromGate() {
+          if (!gateActive) return;
+          forceScrollTop(); /* reset BEFORE the first job runs */
+          gateActive = false;
+          if (gateHint) gateHint.classList.add("fade");
+          setTimeout(removeGateHint, 380);
+          introStartedAt = Date.now();
+          lastProgressAt = Date.now();
+          reArmFailsafe(100000);
+          setStatus("starting from blank canvas…");
+          /* the timeline camera is armed inside runSequence */
+          camOn = false;
+          runId++;
+          var id = runId;
+          setTimeout(function () { if (alive(id)) runSequence(id); }, 80);
+        }
+        function finishIntro(instant) {
+          gateActive = false;
+          manualMode = false;
+          root.classList.remove("manual-scroll");
+          camOn = false; camVel = 0;
+          removeGateHint();
+          runId++;
+          clearQueue();
+          if (window.__introFailsafe) { clearTimeout(window.__introFailsafe); window.__introFailsafe = null; }
+          completeAll();
+          targetLayers = TOTAL_LAYERS; shownLayers = TOTAL_LAYERS; setLayersUI();
+          setStatus("portfolio live ✓");
+          root.classList.remove("intro-on");
+          root.classList.add("intro-done");
+          document.body.classList.remove("intro-building");
+          fadeOutOverlay(instant ? 260 : 1250);
+        }
+        function startIntro() {
+          gateActive = false;
+          removeGateHint();
+          if (fadeTimeout) clearTimeout(fadeTimeout);
+          container.style.display = "";
+          container.style.opacity = "";
+          container.style.transition = "";
+          if (bar) { bar.style.display = ""; bar.style.opacity = ""; bar.style.transition = ""; }
+          root.classList.remove("intro-done");
+          root.classList.add("intro-on");
+          /* CRITICAL: mark this as OUR scroll before scrolling to the
+             top — otherwise the scroll listener below reads the jump
+             as a user skip and kills the replay the instant it starts
+             (this was the broken "again" button). */
+          introStartedAt = Date.now();
+          autoScrolling = true;
+          lastAutoScrollAt = Date.now();
+          forceScrollTop();
+          resetCam();
+          setTimeout(function () { autoScrolling = false; lastAutoScrollAt = Date.now(); }, 500);
+          resetState();
+          clearQueue(); /* drop any stale queued jobs from a previous run before the new one starts */
+          setStatus("starting from blank canvas…");
+          /* Re-arm the never-stay-blank fail-safe for this run */
+          reArmFailsafe(100000);
+          lastProgressAt = Date.now();
+          camOn = false; /* runSequence arms the timeline camera */
+          runId++;
+          var id = runId;
+          setTimeout(function () { if (alive(id)) runSequence(id); }, 60);
+        }
+
+        /* ---------- Skip / replay / motion ---------- */
+        if (skipBtn) skipBtn.addEventListener("click", function (e) { e.stopPropagation(); finishIntro(true); });
+        ["click", "wheel", "touchmove"].forEach(function (evt) {
+          document.addEventListener(evt, function (e) {
+            if (!introActive()) return;
+            /* Clicks on the replay / skip controls are never a "skip"
+               tap — the replay click STARTS the intro, and this same
+               event bubbling up must not instantly finish it again */
+            if (e && e.target && e.target.closest && e.target.closest("#replay-build, #skip-intro")) return;
+            /* GATE: a click is the starting signal, not a skip.
+               Scrolling/touch-dragging at the gate does nothing.
+               A click on a persistent-chrome link (header, hero
+               CTAs) starts the build WITHOUT also following the
+               anchor — the build starts at the top, and an anchor
+               jump in the same tap would fight its first frames. */
+            if (gateActive) {
+              if (evt === "click") {
+                if (e && e.target && e.target.closest && e.target.closest('a[href^="#"]') && e.preventDefault) e.preventDefault();
+                startBuildFromGate();
+              }
+              return;
+            }
+            /* MANUAL MODE: wheel / touch-drag IS the build engine
+               and clicks are just clicks — none of them is a skip.
+               Only the Skip intro button completes the page now. */
+            if (manualMode) return;
+            /* Ignore the tail of the very click that started a replay */
+            if (Date.now() - introStartedAt < 600) return;
+            finishIntro(true);
+          }, { passive: evt !== "click" }); /* click must stay non-passive: the gate branch preventDefaults anchor jumps */
+        });
+        document.addEventListener("keydown", function (e) {
+          if (!introActive()) return;
+          if (e && e.target && e.target.closest && e.target.closest("#replay-build, #skip-intro")) return;
+          if (gateActive) {
+            if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+              e.preventDefault();
+              startBuildFromGate();
+            }
+            return;
+          }
+          if (manualMode) return; /* Phase 2: End / PageDown / arrows are how the user builds — never a skip */
+          if (Date.now() - introStartedAt < 600) return;
+          finishIntro(true);
+        });
+        document.addEventListener("scroll", function () {
+          if (!introActive() || autoScrolling) return;
+          if (manualMode) return; /* Phase 2: the user's scroll drives the build — it is never a skip */
+          if (Date.now() - introStartedAt < 1600) return; /* restart grace: our own scroll-to-top */
+          if (Date.now() - lastAutoScrollAt > 900) finishIntro(true);
+        }, { passive: true });
+        var replayBtn = document.getElementById("replay-build");
+        if (replayBtn) replayBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          /* The button must work every time — if motion was switched
+             off, switch it back on so the build can actually run */
+          if (motionOff()) {
+            root.classList.remove("motion-off");
+            window.__motionOff = false;
+            try { window.localStorage.setItem("ayan-motion", "on"); } catch (err) {}
+            var mt = document.getElementById("motion-toggle");
+            var mtl = document.getElementById("motion-toggle-label");
+            if (mt) mt.setAttribute("aria-pressed", "false");
+            if (mtl) mtl.textContent = "MOTION ON";
+          }
+          startIntro();
+        });
+        document.addEventListener("motionchange", function (e) {
+          if (e.detail && e.detail.off) {
+            gateActive = false;
+            manualMode = false;
+            root.classList.remove("manual-scroll");
+            camOn = false; camVel = 0;
+            removeGateHint();
+            runId++;
+            root.classList.remove("intro-on");
+            root.classList.add("intro-done");
+            document.body.classList.remove("intro-building");
+            completeAll();
+          }
+        });
+
+        /* ---------- Progress watchdog (freeze repair) ----------
+           While a build is running, if NO job completes for 14s the
+           run is declared stuck and the intro finishes cleanly onto
+           the complete page — the visitor can never be left sitting
+           on a half-built blank screen again. The gate is exempt:
+           waiting there is the whole point. */
+        setInterval(function () {
+          if (!introActive() || gateActive) return;
+          /* MANUAL MODE: not scrolling is legitimate waiting, never
+             a stall — the watchdog stays silent while the user is
+             idle. It only fires if the user HAS been scrolling
+             (energy applied within the last few seconds) and yet no
+             job has completed for 14s: a genuinely stuck job. */
+          if (manualMode && Date.now() - lastScrollActivityAt > 4000) return;
+          if (lastProgressAt && Date.now() - lastProgressAt > 14000) finishIntro(true);
+        }, 2000);
+
+        /* ---------- Resize mid-run ----------
+           Waypoint positions are cached document Y values; a resize
+           reflows the page and makes them stale (the camera would
+           frame empty space). Refresh them, and resync the float
+           scroll accumulator so the next tick starts from truth. */
+        var resizeTimer = null;
+        window.addEventListener("resize", function () {
+          if (!introActive()) return;
+          if (resizeTimer) clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () {
+            camQueue.forEach(function (wp) {
+              var r = wp.elm.getBoundingClientRect();
+              wp.docY = r.top + (window.scrollY || 0);
+              wp.h = wp.elm.offsetHeight || wp.h;
+            });
+            camPos = null;
+          }, 160);
+        });
+
+        /* ---------- Go: assemble at the gate, wait for the click ---------- */
+        prep();
+        resetState();
+        enterGate();
+      })();
+    </script>
+  </body>
+</html>
